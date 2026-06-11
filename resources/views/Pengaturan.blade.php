@@ -3,13 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard - Tugas Kelompok</title>
-    <link rel="stylesheet" href="{{ asset('css/dashboard.css') }}">
+    <title>Pengaturan - SAVIOUR App</title>
+    <link rel="stylesheet" href="{{ asset('css/Pengaturan.css') }}">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
-
 <div class="dashboard-wrapper">
+
     <aside class="sidebar">
         <div class="sidebar-brand">
             <h3>SAVIOUR App</h3>
@@ -38,39 +38,57 @@
 
     <main class="main-content">
         <header class="content-header">
-            <h2>Selamat Datang Kembali! 👋</h2>
+            <h2>⚙️ Pengaturan</h2>
             <div class="user-profile">
                 <span>{{ Auth::user()->name }}</span>
             </div>
         </header>
 
         <section class="content-body">
-            <div class="cards-grid">
-                <div class="card">
-                    <h4>Status Akun</h4>
-                    <p class="status-active">Aktif</p>
-                </div>
-                <div class="card">
-                    <h4>Aktivitas Terakhir</h4>
-                    <p>Baru saja login</p>
-                </div>
-                <div class="card">
-                    <h4>Project Kelompok</h4>
-                    <p>Progress 75%</p>
-                </div>
+
+            @if(session('success'))
+                <div class="alert-success">{{ session('success') }}</div>
+            @endif
+
+            <div class="settings-card">
+                <h4>Ganti Password</h4>
+                <form action="{{ route('pengaturan.password') }}" method="POST">
+                    @csrf
+
+                    @if($errors->any())
+                        <div class="alert-error">
+                            @foreach($errors->all() as $error)
+                                <p>{{ $error }}</p>
+                            @endforeach
+                        </div>
+                    @endif
+
+                    <div class="form-group">
+                        <label>Password Lama</label>
+                        <input type="password" name="current_password">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Password Baru</label>
+                        <input type="password" name="new_password">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Konfirmasi Password Baru</label>
+                        <input type="password" name="new_password_confirmation">
+                    </div>
+
+                    <button type="submit" class="btn-save">Ubah Password</button>
+                </form>
             </div>
 
-            <div class="welcome-box">
-                <h3>Halo, Selamat! Anda Berhasil Masuk 🎉</h3>
-                <p>Ini adalah halaman utama sistem setelah proses autentikasi berhasil.</p>
-            </div>
         </section>
 
         <footer class="footer">
             <p>© 2026 Kelompok Orang Orang Gantenk!!</p>
         </footer>
     </main>
-</div>
 
+</div>
 </body>
 </html>
