@@ -2,18 +2,38 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 
-Route::get('/',         [AuthController::class, 'showLogin']);
-Route::get('/login',    [AuthController::class, 'showLogin'])->name('login');
-Route::post('/login',   [AuthController::class, 'login']);
-Route::get('/register', [AuthController::class, 'showRegister']);
-Route::post('/register',[AuthController::class, 'register'])->name('register');
-Route::get('/logout',   [AuthController::class, 'logout'])->name('logout');
+// ── GUEST ONLY (redirect kalau sudah login) ──────────
+Route::middleware('guest')->group(function () {
+    Route::get('/',          [AuthController::class, 'showLogin']);
+    Route::get('/login',     [AuthController::class, 'showLogin'])->name('login');
+    Route::post('/login',    [AuthController::class, 'login']);
+    Route::get('/register',  [AuthController::class, 'showRegister'])->name('register');
+    Route::post('/register', [AuthController::class, 'register']);
+});
 
-Route::middleware('auth')->group(function () {
-    Route::get('/dashboard',          [AuthController::class, 'dashboard'])->name('dashboard');
-    Route::get('/profile',            [AuthController::class, 'showProfile'])->name('profile');
-    Route::post('/profile',           [AuthController::class, 'updateProfile'])->name('profile.update');
-    Route::get('/Tentang',            [AuthController::class, 'tentangKelompok'])->name('tentang');
-    Route::get('/pengaturan',         [AuthController::class, 'showPengaturan'])->name('pengaturan');
-    Route::post('/pengaturan/password',[AuthController::class, 'updatePassword'])->name('pengaturan.password');
+// ── LOGOUT (butuh auth) ──────────────────────────────
+Route::post('/logout', [AuthController::class, 'logout'])->name('logout')->middleware('auth');
+
+// ════════════════════════════════════════════════════
+// USER ROUTES  (role: user)
+// ════════════════════════════════════════════════════
+Route::middleware(['auth', 'role:user'])->group(function () {
+    Route::get('/dashboard',            [AuthController::class, 'dashboard'])->name('dashboard');
+    Route::get('/profile',              [AuthController::class, 'showProfile'])->name('profile');
+    Route::post('/profile',             [AuthController::class, 'updateProfile'])->name('profile.update');
+    Route::get('/tentang',              [AuthController::class, 'tentangKelompok'])->name('tentang');
+    Route::get('/pengaturan',           [AuthController::class, 'showPengaturan'])->name('pengaturan');
+    Route::post('/pengaturan/password', [AuthController::class, 'updatePassword'])->name('pengaturan.password');
+});
+
+// ════════════════════════════════════════════════════
+// ADMIN ROUTES  (role: admin)
+// ════════════════════════════════════════════════════
+Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->group(function () {
+    Route::get('/dashboard',                   [AuthController::class, 'adminDashboard'])->name('dashboard');
+    Route::get('/users',                       [AuthController::class, 'adminUsers'])->name('users');
+    Route::get('/users/{user}/edit',           [AuthController::class, 'adminEditUser'])->name('users.edit');
+    Route::put('/users/{user}',                [AuthController::class, 'adminUpdateUser'])->name('users.update');
+    Route::delete('/users/{user}',             [AuthController::class, 'adminDeleteUser'])->name('users.destroy');
+    Route::post('/users/{user}/reset-password',[AuthController::class, 'adminResetPassword'])->name('users.reset-password');
 });

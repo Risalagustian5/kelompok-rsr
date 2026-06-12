@@ -1,21 +1,21 @@
 <?php
+// FILE: app/Models/User.php
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
 class User extends Authenticatable
 {
-    /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasFactory, Notifiable;
 
     protected $fillable = [
         'name',
         'email',
         'password',
+        'role',       // ← tambahkan ini
     ];
 
     protected $hidden = [
@@ -27,13 +27,24 @@ class User extends Authenticatable
     {
         return [
             'email_verified_at' => 'datetime',
-            'password' => 'hashed',
+            'password'          => 'hashed',
         ];
     }
 
-    // ← Tambahkan di sini
+    // ── Relasi ke Profile ────────────────────────────
     public function profile()
     {
-        return $this->hasOne(\App\Models\Profile::class);
+        return $this->hasOne(Profile::class);
+    }
+
+    // ── Helper cek role ──────────────────────────────
+    public function isAdmin(): bool
+    {
+        return $this->role === 'admin';
+    }
+
+    public function isUser(): bool
+    {
+        return $this->role === 'user';
     }
 }

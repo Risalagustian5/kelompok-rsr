@@ -29,7 +29,7 @@
             </li>
         </ul>
         <div class="sidebar-footer">
-            <form action="{{ route('logout') }}" method="GET">
+            <form action="{{ route('logout') }}" method="POST">
                 @csrf
                 <button type="submit" class="btn-logout">🚪 Keluar</button>
             </form>
