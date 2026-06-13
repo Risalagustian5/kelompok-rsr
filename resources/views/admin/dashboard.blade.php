@@ -58,19 +58,19 @@
       <div class="cards-grid">
         <div class="card">
           <h4>Total User</h4>
-          <p>3</p>
+          <p>{{ \App\Models\User::count() }}</p>
         </div>
         <div class="card">
           <h4>Admin</h4>
-          <p>2</p>
+          <p>{{ \App\Models\User::where('role', 'admin')->count() }}</p>
         </div>
         <div class="card">
           <h4>User Aktif</h4>
-          <p class="status-active">3</p>
+          <p class="status-active">{{ \App\Models\User::where('role', 'user')->count() }}</p>
         </div>
         <div class="card">
           <h4>Jurusan</h4>
-          <p>1</p>
+         <p>1</p>
         </div>
       </div>
 
