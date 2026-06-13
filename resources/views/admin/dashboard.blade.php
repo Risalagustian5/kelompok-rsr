@@ -46,7 +46,7 @@
         <h2>Dashboard</h2>
       </div>
       <div class="user-profile">
-        <span>Muhammad Rif'al</span>
+        <span>{{ Auth::user()->name }}</span>
         <span class="badge-admin-header">ADMIN</span>
       </div>
     </div>
@@ -76,7 +76,7 @@
 
       <!-- WELCOME BOX -->
       <div class="welcome-box">
-        <h3>Selamat Datang, Muhammad Rif'al 👋</h3>
+        <h3>Selamat Datang, {{ Auth::user()->name }} 👋</h3>
         <p>Ini adalah halaman dashboard SAVIOUR Admin. Kamu dapat mengelola data user, memantau aktivitas sistem, dan mengatur berbagai pengaturan dari sini.</p>
       </div>
 
