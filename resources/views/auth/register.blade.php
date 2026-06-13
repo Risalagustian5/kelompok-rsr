@@ -27,7 +27,7 @@
         </div>
 
         <div class="left-hero">
-          <h1>Bergabung<br>bersama kami! <span class="wave">🚀</span></h1>
+          <h1>Bergabung<br>bersama kami! <span class="wave"></span></h1>
           <p>Daftar sekarang dan mulai kelola proyek kelompok kamu dengan lebih mudah dan terorganisir.</p>
         </div>
 
@@ -57,9 +57,9 @@
 
         <div class="team-badge">
           <div class="avatars">
-            <div class="av av-a">A</div>
-            <div class="av av-b">B</div>
-            <div class="av av-c">C</div>
+            <div class="av av-a">R</div>
+            <div class="av av-b">S</div>
+            <div class="av av-c">R</div>
           </div>
           <span>Kelompok Orang Orang Gantenk</span>
         </div>

@@ -28,7 +28,7 @@
                     </svg>
                     <span>LaravelKelompok</span>
                 </div>
-                <h1>Selamat datang<br>kembali! 👋</h1>
+                <h1>Selamat datang<br>kembali! </h1>
                 <p>Platform kolaborasi terbaik untuk kelompok belajar kamu. Akses semua proyek dan tugas dalam satu tempat.</p>
                 <div class="feature-list">
                     <div class="feature-item">
@@ -64,9 +64,9 @@
 
                 <div class="card-header">
                     <div class="avatar-group">
-                        <div class="avatar av1">A</div>
-                        <div class="avatar av2">B</div>
-                        <div class="avatar av3">C</div>
+                        <div class="avatar av1">R</div>
+                        <div class="avatar av2">S</div>
+                        <div class="avatar av3">R</div>
                     </div>
                     <div class="badge">Kelompok Orang Orang Gantenk</div>
                 </div>

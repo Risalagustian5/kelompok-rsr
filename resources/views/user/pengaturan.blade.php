@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pengaturan - SAVIOUR App</title>
+    <title>Pengaturan - RSR App</title>
     <link rel="stylesheet" href="{{ asset('css/Pengaturan.css') }}">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
@@ -12,7 +12,7 @@
 
     <aside class="sidebar">
         <div class="sidebar-brand">
-            <h3>SAVIOUR App</h3>
+            <h3>RSR App</h3>
         </div>
         <ul class="sidebar-menu">
             <li class="{{ request()->is('dashboard') ? 'active' : '' }}">
@@ -22,7 +22,7 @@
                 <a href="{{ route('profile') }}">👤 Profil Saya</a>
             </li>
             <li class="{{ request()->is('tentang') ? 'active' : '' }}">
-                <a href="{{ route('tentang') }}">📁 Tentang Saya</a>
+                <a href="{{ route('tentang') }}">📁 Tentang Kelompok</a>
             </li>
             <li class="{{ request()->is('pengaturan') ? 'active' : '' }}">
                 <a href="{{ route('pengaturan') }}">⚙️ Pengaturan</a>
