@@ -18,6 +18,13 @@
             <li class="{{ request()->is('dashboard') ? 'active' : '' }}">
                 <a href="{{ route('dashboard') }}">📊 Dashboard</a>
             </li>
+            <li class="{{ request()->is('villas*') ? 'active' : '' }}">
+                <a href="{{ route('villas.index') }}">🏡 Jelajah Villa</a>
+            </li>
+            <li class="{{ request()->is('history') ? 'active' : '' }}">
+                <a href="{{ route('history') }}">📋 Riwayat Pesanan</a>
+            </li>
+            <hr style="border: 0; border-top: 1px solid #334155; margin: 10px 0;">
             <li class="{{ request()->is('profile') ? 'active' : '' }}">
                 <a href="{{ route('profile') }}">👤 Profil Saya</a>
             </li>
@@ -45,6 +52,12 @@
         </header>
 
         <section class="content-body">
+            @if(session('success'))
+                <div style="background: #d1fae5; color: #065f46; padding: 15px; border-radius: 8px; margin-bottom: 20px;">
+                    {{ session('success') }}
+                </div>
+            @endif
+
             <div class="cards-grid">
                 <div class="card">
                     <h4>Status Akun</h4>

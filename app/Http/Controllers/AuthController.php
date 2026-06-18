@@ -34,7 +34,7 @@ class AuthController extends Controller
         return redirect()->route('login');
     }
 
-    // ── USER ROUTES (DITAMBAHIN BIAR GA ERROR) ──
+    // ── USER ROUTES (DIPERBAIKI) ──
     public function dashboard() { return view('user.dashboard', ['user' => Auth::user()]); }
     
     public function showProfile() { return view('user.profile', ['user' => Auth::user()]); }
@@ -46,7 +46,11 @@ class AuthController extends Controller
         return back()->with('success', 'Profil berhasil diupdate!');
     }
 
-    public function tentangKelompok() { return view('user.tentang'); }
+    // Fixed: Menambahkan variabel $anggota agar tidak error di view
+    public function tentangKelompok() { 
+        $anggota = ['Rizal', 'Satria', 'Anggota Lain']; 
+        return view('user.tentang', compact('anggota')); 
+    }
     
     public function showPengaturan() { return view('user.pengaturan', ['user' => Auth::user()]); }
 
