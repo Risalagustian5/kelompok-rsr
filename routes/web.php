@@ -1,10 +1,12 @@
 <?php
+
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\VillaController;
 
 // ── GUEST ONLY (redirect kalau sudah login) ──────────
 Route::middleware('guest')->group(function () {
-    Route::get('/',          [AuthController::class, 'showLogin']);
+    Route::get('/',         [AuthController::class, 'showLogin']);
     Route::get('/login',     [AuthController::class, 'showLogin'])->name('login');
     Route::post('/login',    [AuthController::class, 'login']);
     Route::get('/register',  [AuthController::class, 'showRegister'])->name('register');
@@ -24,16 +26,29 @@ Route::middleware(['auth', 'role:user'])->group(function () {
     Route::get('/tentang',              [AuthController::class, 'tentangKelompok'])->name('tentang');
     Route::get('/pengaturan',           [AuthController::class, 'showPengaturan'])->name('pengaturan');
     Route::post('/pengaturan/password', [AuthController::class, 'updatePassword'])->name('pengaturan.password');
+    
+    // 👥 Route Villa khusus untuk User/Tamu yang sudah Login
+    Route::get('/villas',       [VillaController::class, 'index'])->name('villas.index');
+    Route::get('/villas/{id}',  [VillaController::class, 'show'])->name('villas.show');
 });
 
 // ════════════════════════════════════════════════════
-// ADMIN ROUTES  (role: admin)
+// ADMIN ROUTES  (role: admin) - CRUD LENGKAP VIA API
 // ════════════════════════════════════════════════════
 Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->group(function () {
-    Route::get('/dashboard',                   [AuthController::class, 'adminDashboard'])->name('dashboard');
-    Route::get('/users',                       [AuthController::class, 'adminUsers'])->name('users');
-    Route::get('/users/{user}/edit',           [AuthController::class, 'adminEditUser'])->name('users.edit');
-    Route::put('/users/{user}',                [AuthController::class, 'adminUpdateUser'])->name('users.update');
-    Route::delete('/users/{user}',             [AuthController::class, 'adminDeleteUser'])->name('users.destroy');
-    Route::post('/users/{user}/reset-password',[AuthController::class, 'adminResetPassword'])->name('users.reset-password');
+    // Manajamen Users
+    Route::get('/dashboard',            [AuthController::class, 'adminDashboard'])->name('dashboard');
+    Route::get('/users',                [AuthController::class, 'adminUsers'])->name('users');
+    Route::get('/users/{user}/edit',    [AuthController::class, 'adminEditUser'])->name('users.edit');
+    Route::put('/users/{user}',         [AuthController::class, 'adminUpdateUser'])->name('users.update');
+    Route::delete('/users/{user}',      [AuthController::class, 'adminDeleteUser'])->name('users.destroy');
+    Route::post('/users/{user}/reset-password', [AuthController::class, 'adminResetPassword'])->name('users.reset-password');
+
+    // 👨‍✈️ Manajemen Villa (CRUD) - Sudah include Edit & Update otomatis
+    Route::get('/villas',              [VillaController::class, 'adminIndex'])->name('villas.index');
+    Route::get('/villas/create',       [VillaController::class, 'create'])->name('villas.create');
+    Route::post('/villas',             [VillaController::class, 'store'])->name('villas.store');
+    Route::get('/villas/{id}/edit',    [VillaController::class, 'edit'])->name('villas.edit');
+    Route::put('/villas/{id}',         [VillaController::class, 'update'])->name('villas.update');
+    Route::delete('/villas/{id}',      [VillaController::class, 'destroy'])->name('villas.destroy');
 });

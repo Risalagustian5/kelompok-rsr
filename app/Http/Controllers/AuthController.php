@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
@@ -8,11 +9,8 @@ use App\Models\User;
 
 class AuthController extends Controller
 {
-    // ── LOGIN ────────────────────────────────────────
-    public function showLogin()
-    {
-        return view('auth.login');
-    }
+    // ── LOGIN & REGISTER ──
+    public function showLogin() { return view('auth.login'); }
 
     public function login(Request $request)
     {
@@ -21,46 +19,13 @@ class AuthController extends Controller
             'password' => 'required',
         ]);
 
-        if (Auth::attempt([
-            'email'    => $request->email,
-            'password' => $request->password,
-        ], $request->boolean('remember'))) {
+        if (Auth::attempt(['email' => $request->email, 'password' => $request->password], $request->boolean('remember'))) {
             $request->session()->regenerate();
-
-            return Auth::user()->role === 'admin'
-                ? redirect()->route('admin.dashboard')
-                : redirect()->route('dashboard');
+            return Auth::user()->role === 'admin' ? redirect()->route('admin.dashboard') : redirect()->route('dashboard');
         }
-
         return back()->withErrors(['email' => 'Email atau password salah.'])->onlyInput('email');
     }
 
-    // ── REGISTER ─────────────────────────────────────
-    public function showRegister()
-    {
-        return view('auth.register');
-    }
-
-    public function register(Request $request)
-    {
-        $request->validate([
-            'name'     => 'required|string|max:255',
-            'email'    => 'required|email|unique:users,email',
-            'password' => 'required|min:8|confirmed',
-        ]);
-
-        User::create([
-            'name'     => $request->name,
-            'email'    => $request->email,
-            'password' => Hash::make($request->password),
-            'role'     => 'user', // default role
-        ]);
-
-        return redirect()->route('login')
-            ->with('success', 'Akun berhasil dibuat! Silakan login.');
-    }
-
-    // ── LOGOUT ───────────────────────────────────────
     public function logout(Request $request)
     {
         Auth::logout();
@@ -69,103 +34,48 @@ class AuthController extends Controller
         return redirect()->route('login');
     }
 
-    // ════════════════════════════════════════════════
-    // USER ROUTES
-    // ════════════════════════════════════════════════
-
-    public function dashboard()
-    {
-        $user = Auth::user();
-        return view('user.dashboard', compact('user'));
-    }
-
-    // ── PROFIL ───────────────────────────────────────
-    public function showProfile()
-    {
-        $user    = Auth::user();
-        $profile = $user->profile;
-        return view('user.profile', compact('user', 'profile'));
-    }
-
+    // ── USER ROUTES (DITAMBAHIN BIAR GA ERROR) ──
+    public function dashboard() { return view('user.dashboard', ['user' => Auth::user()]); }
+    
+    public function showProfile() { return view('user.profile', ['user' => Auth::user()]); }
+    
     public function updateProfile(Request $request)
     {
-        $request->validate([
-            'name'    => 'required|string|max:255',
-            'phone'   => 'nullable|string|max:20',
-            'nim'     => 'nullable|string|max:20',
-            'jurusan' => 'nullable|string|max:100',
-            'bio'     => 'nullable|string|max:500',
-        ]);
-
-        $user = Auth::user();
-        $user->update(['name' => $request->name]);
-
-        $user->profile()->updateOrCreate(
-            ['user_id' => $user->id],
-            [
-                'phone'   => $request->phone,
-                'nim'     => $request->nim,
-                'jurusan' => $request->jurusan,
-                'bio'     => $request->bio,
-            ]
-        );
-
-        return back()->with('success', 'Profil berhasil diperbarui!');
+        $request->validate(['name' => 'required|string|max:255']);
+        Auth::user()->update(['name' => $request->name]);
+        return back()->with('success', 'Profil berhasil diupdate!');
     }
 
-    // ── TENTANG KELOMPOK ─────────────────────────────
-    public function tentangKelompok()
-    {
-        $anggota = User::with('profile')->where('role', 'user')->get();
-        return view('user.tentang', compact('anggota'));
-    }
-
-    // ── PENGATURAN ───────────────────────────────────
-    public function showPengaturan()
-    {
-        return view('user.pengaturan');
-    }
+    public function tentangKelompok() { return view('user.tentang'); }
+    
+    public function showPengaturan() { return view('user.pengaturan', ['user' => Auth::user()]); }
 
     public function updatePassword(Request $request)
     {
         $request->validate([
-            'current_password' => 'required',
-            'new_password'     => 'required|min:8|confirmed',
+            'password' => 'required|confirmed|min:6',
         ]);
-
-        $user = Auth::user();
-
-        if (!Hash::check($request->current_password, $user->password)) {
-            return back()->withErrors(['current_password' => 'Password lama salah.']);
-        }
-
-        $user->update(['password' => Hash::make($request->new_password)]);
+        Auth::user()->update(['password' => Hash::make($request->password)]);
         return back()->with('success', 'Password berhasil diubah!');
     }
 
-    // ════════════════════════════════════════════════
-    // ADMIN ROUTES
-    // ════════════════════════════════════════════════
-
+    // ── ADMIN ROUTES ──
     public function adminDashboard()
     {
         $totalUsers  = User::where('role', 'user')->count();
         $totalAdmins = User::where('role', 'admin')->count();
-        $allUsers    = User::with('profile')->latest()->get();
-
-        return view('admin.dashboard', compact('totalUsers', 'totalAdmins', 'allUsers'));
+        return view('admin.dashboard', compact('totalUsers', 'totalAdmins'));
     }
 
     public function adminUsers()
     {
-        $users = User::with('profile')->latest()->paginate(10);
+        $users = User::latest()->paginate(10);
         return view('admin.users', compact('users'));
     }
 
     public function adminEditUser(User $user)
     {
-        $profile = $user->profile;
-        return view('admin.edit-user', compact('user', 'profile'));
+        return view('admin.edit-user', compact('user'));
     }
 
     public function adminUpdateUser(Request $request, User $user)
@@ -182,30 +92,15 @@ class AuthController extends Controller
             'role'  => $request->role,
         ]);
 
-        return redirect()->route('admin.users')
-            ->with('success', 'Data user berhasil diperbarui!');
+        return redirect()->route('admin.users')->with('success', 'Data user berhasil diperbarui!');
     }
 
     public function adminDeleteUser(User $user)
     {
-        // Cegah admin hapus akun dirinya sendiri
         if ($user->id === Auth::id()) {
             return back()->withErrors(['error' => 'Tidak bisa menghapus akun sendiri.']);
         }
-
         $user->delete();
-        return redirect()->route('admin.users')
-            ->with('success', 'User berhasil dihapus!');
-    }
-
-    public function adminResetPassword(Request $request, User $user)
-    {
-        $request->validate([
-            'new_password' => 'required|min:8|confirmed',
-        ]);
-
-        $user->update(['password' => Hash::make($request->new_password)]);
-
-        return back()->with('success', 'Password user berhasil direset!');
+        return redirect()->route('admin.users')->with('success', 'User berhasil dihapus!');
     }
 }
