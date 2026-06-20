@@ -10,34 +10,7 @@ use App\Models\User;
 class AuthController extends Controller
 {
     // ── LOGIN & REGISTER ──
-    public function showLogin() 
-    { 
-        return view('auth.login'); 
-    }
-
-    public function showRegister() 
-    { 
-        return view('auth.register'); 
-    }
-
-    public function register(Request $request)
-    {
-        $request->validate([
-            'name'     => 'required|string|max:255',
-            'email'    => 'required|email|unique:users,email',
-            'password' => 'required|confirmed|min:6',
-        ]);
-
-        $user = User::create([
-            'name'     => $request->name,
-            'email'    => $request->email,
-            'password' => Hash::make($request->password),
-            'role'     => 'user', // default role
-        ]);
-
-        Auth::login($user);
-        return redirect()->route('dashboard');
-    }
+    public function showLogin() { return view('auth.login'); }
 
     public function login(Request $request)
     {
@@ -48,9 +21,7 @@ class AuthController extends Controller
 
         if (Auth::attempt(['email' => $request->email, 'password' => $request->password], $request->boolean('remember'))) {
             $request->session()->regenerate();
-            return Auth::user()->role === 'admin' 
-                ? redirect()->route('admin.dashboard') 
-                : redirect()->route('dashboard');
+            return Auth::user()->role === 'admin' ? redirect()->route('admin.dashboard') : redirect()->route('dashboard');
         }
         return back()->withErrors(['email' => 'Email atau password salah.'])->onlyInput('email');
     }
@@ -63,16 +34,10 @@ class AuthController extends Controller
         return redirect()->route('login');
     }
 
-    // ── USER ROUTES ──
-    public function dashboard() 
-    { 
-        return view('user.dashboard', ['user' => Auth::user()]); 
-    }
+    // ── USER ROUTES (DIPERBAIKI) ──
+    public function dashboard() { return view('user.dashboard', ['user' => Auth::user()]); }
     
-    public function showProfile() 
-    { 
-        return view('user.profile', ['user' => Auth::user()]); 
-    }
+    public function showProfile() { return view('user.profile', ['user' => Auth::user()]); }
     
     public function updateProfile(Request $request)
     {
@@ -81,16 +46,13 @@ class AuthController extends Controller
         return back()->with('success', 'Profil berhasil diupdate!');
     }
 
-    public function tentangKelompok() 
-    { 
+    // Fixed: Menambahkan variabel $anggota agar tidak error di view
+    public function tentangKelompok() { 
         $anggota = ['Rizal', 'Satria', 'Anggota Lain']; 
         return view('user.tentang', compact('anggota')); 
     }
     
-    public function showPengaturan() 
-    { 
-        return view('user.pengaturan', ['user' => Auth::user()]); 
-    }
+    public function showPengaturan() { return view('user.pengaturan', ['user' => Auth::user()]); }
 
     public function updatePassword(Request $request)
     {

@@ -34,9 +34,6 @@ Route::middleware(['auth', 'role:user'])->group(function () {
     // 🆕 Booking & History
     Route::post('/villas/{id}/book', [VillaController::class, 'storeBooking'])->name('villas.book');
     Route::get('/history',           [VillaController::class, 'historyBooking'])->name('history');
-
-    // 🆕 User Cancel Booking
-    Route::patch('/bookings/{id}/cancel', [VillaController::class, 'userCancelBooking'])->name('bookings.user.cancel');
 });
 
 // ════════════════════════════════════════════════════
@@ -59,9 +56,7 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
     Route::put('/villas/{id}',          [VillaController::class, 'update'])->name('villas.update');
     Route::delete('/villas/{id}',       [VillaController::class, 'destroy'])->name('villas.destroy');
 
-    // 🆕 Manajemen Pesanan (Booking)
-    Route::get('/bookings',               [VillaController::class, 'adminBookings'])->name('bookings.index');
+    // 🆕 MANAJEMEN PESANAN (TAMBAHAN)
+    Route::get('/bookings',             [VillaController::class, 'adminBookings'])->name('bookings.index');
     Route::post('/bookings/{id}/confirm', [VillaController::class, 'confirmBooking'])->name('bookings.confirm');
-    Route::patch('/bookings/{id}/cancel', [VillaController::class, 'cancelBooking'])->name('bookings.cancel');
-    Route::delete('/bookings/{id}',       [VillaController::class, 'destroyBooking'])->name('bookings.destroy');
 });

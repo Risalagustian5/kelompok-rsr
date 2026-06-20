@@ -49,13 +49,6 @@ class VillaController extends Controller
         return view('user.villas.history', compact('bookings')); 
     }
 
-    // --- USER: Batalkan Booking ---
-    public function userCancelBooking($id) {
-        $booking = Booking::where('user_id', Auth::id())->findOrFail($id);
-        $booking->update(['status' => 'cancelled']);
-        return back()->with('success', 'Booking kamu berhasil dibatalkan!');
-    }
-
     // --- ADMIN: Lihat Daftar Pesanan ---
     public function adminBookings() {
         $bookings = Booking::with('user', 'villa')->latest()->get();
@@ -67,20 +60,6 @@ class VillaController extends Controller
         $booking = Booking::findOrFail($id);
         $booking->update(['status' => 'confirmed']);
         return back()->with('success', 'Pesanan telah dikonfirmasi!');
-    }
-
-    // --- ADMIN: Cancel Booking ---
-    public function cancelBooking($id) {
-        $booking = Booking::findOrFail($id);
-        $booking->update(['status' => 'cancelled']);
-        return back()->with('success', 'Booking dibatalkan oleh admin!');
-    }
-
-    // --- ADMIN: Hapus Booking ---
-    public function destroyBooking($id) {
-        $booking = Booking::findOrFail($id);
-        $booking->delete();
-        return back()->with('success', 'Booking berhasil dihapus!');
     }
 
     // --- ADMIN: Daftar Villa ---

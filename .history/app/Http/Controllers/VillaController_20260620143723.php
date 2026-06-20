@@ -49,14 +49,7 @@ class VillaController extends Controller
         return view('user.villas.history', compact('bookings')); 
     }
 
-    // --- USER: Batalkan Booking ---
-    public function userCancelBooking($id) {
-        $booking = Booking::where('user_id', Auth::id())->findOrFail($id);
-        $booking->update(['status' => 'cancelled']);
-        return back()->with('success', 'Booking kamu berhasil dibatalkan!');
-    }
-
-    // --- ADMIN: Lihat Daftar Pesanan ---
+    // --- ADMIN: Lihat Daftar Pesanan (User) ---
     public function adminBookings() {
         $bookings = Booking::with('user', 'villa')->latest()->get();
         return view('admin.bookings.index', compact('bookings'));
@@ -67,20 +60,6 @@ class VillaController extends Controller
         $booking = Booking::findOrFail($id);
         $booking->update(['status' => 'confirmed']);
         return back()->with('success', 'Pesanan telah dikonfirmasi!');
-    }
-
-    // --- ADMIN: Cancel Booking ---
-    public function cancelBooking($id) {
-        $booking = Booking::findOrFail($id);
-        $booking->update(['status' => 'cancelled']);
-        return back()->with('success', 'Booking dibatalkan oleh admin!');
-    }
-
-    // --- ADMIN: Hapus Booking ---
-    public function destroyBooking($id) {
-        $booking = Booking::findOrFail($id);
-        $booking->delete();
-        return back()->with('success', 'Booking berhasil dihapus!');
     }
 
     // --- ADMIN: Daftar Villa ---
@@ -96,31 +75,25 @@ class VillaController extends Controller
     public function store(Request $request) {
         $request->validate([
             'nama_villa' => 'required',
-            'harga'      => 'required|numeric',
-            'lokasi'     => 'required',
-            'foto'       => 'required|image|max:2048',
+            'harga' => 'required|numeric',
+            'lokasi' => 'required',
+            'foto' => 'required|image|max:2048',
         ]);
 
-        // Upload ke Supabase
         $file = $request->file('foto');
         $fileName = time() . '_' . $file->getClientOriginalName();
         $supabaseUrl = env('SUPABASE_URL') . '/storage/v1/object/villas/' . $fileName;
-
+        
         $response = Http::withHeaders([
             'Authorization' => 'Bearer ' . env('SUPABASE_KEY'),
-            'apikey'        => env('SUPABASE_KEY'),
-            'Content-Type'  => $file->getClientMimeType(),
-        ])->send('POST', $supabaseUrl, [
-            'body' => file_get_contents($file),
-        ]);
+            'apikey' => env('SUPABASE_KEY'),
+            'Content-Type' => $file->getClientMimeType(),
+        ])->send('POST', $supabaseUrl, ['body' => file_get_contents($file)]);
 
-        if ($response->failed()) {
-            return back()->with('error', 'Gagal upload foto ke Supabase!');
-        }
+        if ($response->failed()) return back()->with('error', 'Gagal upload foto ke Supabase!');
 
         $publicFotoUrl = env('SUPABASE_URL') . '/storage/v1/object/public/villas/' . $fileName;
 
-        // Simpan ke MySQL
         Villa::create([
             'nama_villa' => $request->nama_villa,
             'harga'      => $request->harga,
@@ -146,5 +119,33 @@ class VillaController extends Controller
     public function destroy($id) {
         Villa::findOrFail($id)->delete();
         return redirect()->route('admin.villas.index')->with('success', 'Villa dihapus!');
+    }
+}<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+
+class Villa extends Model
+{
+    use HasFactory;
+
+    // Nama tabel (opsional, default = 'villas')
+    protected $table = 'villas';
+
+    // Kolom yang bisa diisi mass-assignment
+    protected $fillable = [
+        'nama_villa',
+        'harga',
+        'lokasi',
+        'deskripsi',
+        'foto_url',
+    ];
+
+    // Relasi: satu villa bisa punya banyak booking
+    public function bookings()
+    {
+        return $this->hasMany(Booking::class);
     }
 }

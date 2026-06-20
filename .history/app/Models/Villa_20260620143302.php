@@ -9,8 +9,10 @@ class Villa extends Model
 {
     use HasFactory;
 
+    // Nama tabel (opsional, default = 'villas')
     protected $table = 'villas';
 
+    // Kolom yang bisa diisi mass-assignment
     protected $fillable = [
         'nama_villa',
         'harga',
@@ -19,6 +21,7 @@ class Villa extends Model
         'foto_url',
     ];
 
+    // Relasi: satu villa bisa punya banyak booking
     public function bookings()
     {
         return $this->hasMany(Booking::class);

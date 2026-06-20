@@ -36,13 +36,7 @@
         <div class="table-wrapper">
           <table>
             <thead>
-              <tr>
-                <th>User</th>
-                <th>Villa</th>
-                <th>Check-in</th>
-                <th>Status</th>
-                <th>Aksi</th>
-              </tr>
+              <tr><th>User</th><th>Villa</th><th>Check-in</th><th>Status</th><th>Aksi</th></tr>
             </thead>
             <tbody>
               @forelse($bookings as $b)
@@ -51,40 +45,18 @@
                 <td>{{ $b->villa->nama_villa }}</td>
                 <td>{{ $b->check_in }}</td>
                 <td>{{ ucfirst($b->status) }}</td>
-                <td style="display:flex; gap:5px;">
+                <td>
                   @if($b->status == 'pending')
-                    {{-- Tombol Konfirmasi --}}
                     <form action="{{ route('admin.bookings.confirm', $b->id) }}" method="POST">
-                      @csrf
-                      <button type="submit" class="btn-edit" style="background:#059669; color:white; border:none; padding:5px 10px; cursor:pointer;">
-                        Konfirmasi
-                      </button>
+                      @csrf <button type="submit" class="btn-edit" style="background:#059669; color:white; border:none; padding:5px 10px; cursor:pointer;">Konfirmasi</button>
                     </form>
+                  @else 
+                    ✅ Terkonfirmasi
                   @endif
-
-                  @if($b->status == 'confirmed' || $b->status == 'pending')
-                    {{-- Tombol Cancel --}}
-                    <form action="{{ route('admin.bookings.cancel', $b->id) }}" method="POST">
-                      @csrf @method('PATCH')
-                      <button type="submit" class="btn-edit" style="background:#f59e0b; color:white; border:none; padding:5px 10px; cursor:pointer;">
-                        Cancel
-                      </button>
-                    </form>
-                  @endif
-
-                  {{-- Tombol Hapus --}}
-                  <form action="{{ route('admin.bookings.destroy', $b->id) }}" method="POST" onsubmit="return confirm('Yakin ingin menghapus booking ini?');">
-                    @csrf @method('DELETE')
-                    <button type="submit" class="btn-edit" style="background:#dc2626; color:white; border:none; padding:5px 10px; cursor:pointer;">
-                      Hapus
-                    </button>
-                  </form>
                 </td>
               </tr>
               @empty
-              <tr>
-                <td colspan="5" style="text-align:center; padding:20px;">Belum ada pesanan.</td>
-              </tr>
+              <tr><td colspan="5" style="text-align:center; padding:20px;">Belum ada pesanan.</td></tr>
               @endforelse
             </tbody>
           </table>

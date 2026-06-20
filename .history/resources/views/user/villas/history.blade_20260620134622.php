@@ -11,8 +11,6 @@
         .badge { padding: 5px 10px; border-radius: 20px; font-size: 12px; font-weight: 600; }
         .bg-warning { background: #fef3c7; color: #92400e; }
         .bg-success { background: #d1fae5; color: #065f46; }
-        .bg-cancelled { background: #fee2e2; color: #991b1b; }
-        .btn-cancel { background:#f59e0b; color:white; border:none; padding:6px 12px; border-radius:6px; cursor:pointer; font-size:12px; }
     </style>
 </head>
 <body>
@@ -29,10 +27,6 @@
     <main class="main-content">
         <header class="content-header"><h2>Riwayat Pesanan Anda</h2></header>
         <section class="content-body">
-            @if(session('success'))
-                <div class="alert-success">✅ {{ session('success') }}</div>
-            @endif
-
             <div class="table-container">
                 <table>
                     <thead>
@@ -41,7 +35,6 @@
                             <th>Check-in</th>
                             <th>Check-out</th>
                             <th>Status</th>
-                            <th>Aksi</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -50,28 +43,10 @@
                             <td>{{ $b->villa->nama_villa }}</td>
                             <td>{{ $b->check_in }}</td>
                             <td>{{ $b->check_out }}</td>
-                            <td>
-                                <span class="badge 
-                                    @if($b->status == 'pending') bg-warning 
-                                    @elseif($b->status == 'confirmed') bg-success 
-                                    @elseif($b->status == 'cancelled') bg-cancelled 
-                                    @endif">
-                                    {{ ucfirst($b->status) }}
-                                </span>
-                            </td>
-                            <td>
-                                @if($b->status == 'pending' || $b->status == 'confirmed')
-                                    <form action="{{ route('bookings.user.cancel', $b->id) }}" method="POST" style="display:inline;">
-                                        @csrf @method('PATCH')
-                                        <button type="submit" class="btn-cancel">Batalkan</button>
-                                    </form>
-                                @else
-                                    ❌ Tidak ada aksi
-                                @endif
-                            </td>
+                            <td><span class="badge {{ $b->status == 'pending' ? 'bg-warning' : 'bg-success' }}">{{ ucfirst($b->status) }}</span></td>
                         </tr>
                         @empty
-                        <tr><td colspan="5" style="text-align: center; padding:20px;">Belum ada pesanan.</td></tr>
+                        <tr><td colspan="4" style="text-align: center;">Belum ada pesanan.</td></tr>
                         @endforelse
                     </tbody>
                 </table>

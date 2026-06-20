@@ -49,13 +49,6 @@ class VillaController extends Controller
         return view('user.villas.history', compact('bookings')); 
     }
 
-    // --- USER: Batalkan Booking ---
-    public function userCancelBooking($id) {
-        $booking = Booking::where('user_id', Auth::id())->findOrFail($id);
-        $booking->update(['status' => 'cancelled']);
-        return back()->with('success', 'Booking kamu berhasil dibatalkan!');
-    }
-
     // --- ADMIN: Lihat Daftar Pesanan ---
     public function adminBookings() {
         $bookings = Booking::with('user', 'villa')->latest()->get();
@@ -67,20 +60,6 @@ class VillaController extends Controller
         $booking = Booking::findOrFail($id);
         $booking->update(['status' => 'confirmed']);
         return back()->with('success', 'Pesanan telah dikonfirmasi!');
-    }
-
-    // --- ADMIN: Cancel Booking ---
-    public function cancelBooking($id) {
-        $booking = Booking::findOrFail($id);
-        $booking->update(['status' => 'cancelled']);
-        return back()->with('success', 'Booking dibatalkan oleh admin!');
-    }
-
-    // --- ADMIN: Hapus Booking ---
-    public function destroyBooking($id) {
-        $booking = Booking::findOrFail($id);
-        $booking->delete();
-        return back()->with('success', 'Booking berhasil dihapus!');
     }
 
     // --- ADMIN: Daftar Villa ---
@@ -101,7 +80,7 @@ class VillaController extends Controller
             'foto'       => 'required|image|max:2048',
         ]);
 
-        // Upload ke Supabase
+        // --- Upload ke Supabase Storage ---
         $file = $request->file('foto');
         $fileName = time() . '_' . $file->getClientOriginalName();
         $supabaseUrl = env('SUPABASE_URL') . '/storage/v1/object/villas/' . $fileName;
@@ -120,8 +99,21 @@ class VillaController extends Controller
 
         $publicFotoUrl = env('SUPABASE_URL') . '/storage/v1/object/public/villas/' . $fileName;
 
-        // Simpan ke MySQL
-        Villa::create([
+        // --- Simpan ke MySQL Lokal ---
+        $villa = Villa::create([
+            'nama_villa' => $request->nama_villa,
+            'harga'      => $request->harga,
+            'lokasi'     => $request->lokasi,
+            'deskripsi'  => $request->deskripsi,
+            'foto_url'   => $publicFotoUrl,
+        ]);
+
+        // --- Simpan juga ke Supabase Database (Postgres) ---
+        Http::withHeaders([
+            'apikey'        => env('SUPABASE_KEY'),
+            'Authorization' => 'Bearer ' . env('SUPABASE_KEY'),
+            'Content-Type'  => 'application/json',
+        ])->post(env('SUPABASE_URL') . '/rest/v1/villas', [
             'nama_villa' => $request->nama_villa,
             'harga'      => $request->harga,
             'lokasi'     => $request->lokasi,
