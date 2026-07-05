@@ -86,10 +86,15 @@ class AuthController extends Controller
 
     public function tentangKelompok() 
     { 
-        $anggota = ['Rizal', 'Satria', 'Anggota Lain']; 
+        $anggota = ['Risal', 'Satria', 'Rifal']; 
         return view('user.tentang', compact('anggota')); 
     }
     
+    public function showPengaturan() 
+    { 
+        return view('user.pengaturan', ['user' => Auth::user()]); 
+    }
+
    public function updatePassword(Request $request)
     {
         $request->validate([

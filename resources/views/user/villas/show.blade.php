@@ -27,21 +27,8 @@
 <body>
 
 <div class="dashboard-wrapper">
-    <aside class="sidebar">
-        <div class="sidebar-brand"><h3>RSR APP</h3></div>
-        <ul class="sidebar-menu">
-            <li><a href="{{ route('dashboard') }}">📊 Dashboard</a></li>
-            <li class="active"><a href="{{ route('villas.index') }}">🏡 Jelajah Villa</a></li>
-            <li><a href="{{ route('profile') }}">👤 Profil Saya</a></li>
-            <li><a href="{{ route('tentang') }}">📁 Tentang Kelompok</a></li>
-        </ul>
-        <div class="sidebar-footer">
-            <form action="{{ route('logout') }}" method="POST">
-                @csrf 
-                <button type="submit" class="btn-logout">🚪 Keluar</button>
-            </form>
-        </div>
-    </aside>
+
+    @include('user.sidebar')
 
     <main class="main-content">
         <header class="content-header">

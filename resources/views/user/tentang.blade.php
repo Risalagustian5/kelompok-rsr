@@ -10,31 +10,7 @@
 <body>
 <div class="dashboard-wrapper">
 
-    <aside class="sidebar">
-        <div class="sidebar-brand">
-            <h3>RSR App</h3>
-        </div>
-        <ul class="sidebar-menu">
-            <li class="{{ request()->is('dashboard') ? 'active' : '' }}">
-                <a href="{{ route('dashboard') }}">📊 Dashboard</a>
-            </li>
-            <li class="{{ request()->is('profile') ? 'active' : '' }}">
-                <a href="{{ route('profile') }}">👤 Profil Saya</a>
-            </li>
-            <li class="{{ request()->is('tentang') ? 'active' : '' }}">
-                <a href="{{ route('tentang') }}">📁 Tentang Kelompok</a>
-            </li>
-            <li class="{{ request()->is('pengaturan') ? 'active' : '' }}">
-                <a href="{{ route('pengaturan') }}">⚙️ Pengaturan</a>
-            </li>
-        </ul>
-        <div class="sidebar-footer">
-            <form action="{{ route('logout') }}" method="POST">
-                @csrf
-                <button type="submit" class="btn-logout">🚪 Keluar</button>
-            </form>
-        </div>
-    </aside>
+    @include('user.sidebar')
 
     <main class="main-content">
         <header class="content-header">
@@ -53,12 +29,12 @@
 
             <div class="cards-grid">
                 @foreach($anggota as $a)
-                <div class="member-card">
-                    <div class="member-avatar">👤</div>
-                    <p class="member-name">{{ $a->name }}</p>
-                    <p class="member-jurusan">{{ $a->profile->jurusan ?? 'Jurusan belum diisi' }}</p>
-                    <p class="member-nim">NIM: {{ $a->profile->nim ?? '-' }}</p>
-                </div>
+                    <div class="member-card">
+                        <div class="member-avatar">👤</div>
+                        <p class="member-name">{{ $a }}</p>
+                        <p class="member-jurusan">Sistem Informasi</p>
+                        <p class="member-nim">Universitas Al-Ghifari</p>
+                    </div>
                 @endforeach
             </div>
 
