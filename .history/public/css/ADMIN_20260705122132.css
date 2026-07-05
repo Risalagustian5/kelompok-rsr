@@ -416,24 +416,3 @@ tbody td {
     background: #dc2626;       /* Hover lebih gelap */
 }
 
-.dropdown-label {
-    display: flex;
-    align-items: center;
-    justify-content: space-between; /* teks kiri, panah kanan */
-    width: 100%;                    /* label penuh lebar sidebar */
-    padding: 12px 16px;
-    color: #cbd5e1;
-    cursor: pointer;
-    border-radius: 8px;
-    transition: background 0.3s ease;
-}
-
-.arrow {
-    font-size: 14px;                /* ukuran panah */
-    transition: transform 0.3s ease;
-}
-
-#villa-toggle:checked ~ .dropdown-label .arrow {
-    transform: rotate(180deg);      /* animasi panah saat terbuka */
-}
-

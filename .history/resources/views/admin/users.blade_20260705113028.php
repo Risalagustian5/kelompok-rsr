@@ -68,7 +68,7 @@
                   <!-- Tombol Hapus -->
                   <form action="{{ route('admin.users.destroy', $u->id) }}" method="POST" style="display:inline;" onsubmit="return confirm('Yakin hapus?')">
                       @csrf @method('DELETE')
-                      <button type="submit" class="btn btn-delete"> Hapus</button>
+                      <button type="submit" class="btn btn-delete">🗑️ Hapus</button>
                   </form>
                 </td>
               </tr>

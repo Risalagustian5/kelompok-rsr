@@ -224,7 +224,7 @@ body {
 /* ===== CONTENT BODY ===== */
 .content-body {
     padding: 40px;
-    flex: 1;
+    flex: 1; /* isi konten fleksibel agar footer terdorong ke bawah */
 }
 
 /* ===== CARDS GRID ===== */
@@ -351,89 +351,3 @@ tbody td {
     border-radius: 6px;
     text-transform: uppercase;
     letter-spacing: 0.04em;
-}
-/* ===== ACTION BUTTONS ===== */
-.aksi-col {
-    display: flex;
-    gap: 8px;
-    align-items: center;
-}
-
-/* Tombol dasar */
-.btn {
-    border: none;
-    cursor: pointer;
-    font-size: 13px;
-    font-weight: 600;
-    padding: 8px 16px;
-    border-radius: 8px;
-    transition: all 0.25s ease;
-    font-family: 'Poppins', sans-serif;
-    position: relative;
-    overflow: hidden;
-}
-
-/* Efek shine saat hover */
-.btn::after {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: -100%;
-    width: 100%;
-    height: 100%;
-    background: rgba(255,255,255,0.25);
-    transition: left 0.3s ease;
-}
-.btn:hover::after {
-    left: 0;
-}
-
-.btn:hover {
-    transform: translateY(-2px) scale(1.05);
-    opacity: 0.9;
-}
-.btn:active {
-    transform: scale(0.95);
-}
-
-/* Tombol Edit (oranye) */
-.btn-edit {
-    background: #f59e0b;       /* Oranye terang */
-    color: #ffffff;
-    border: 1px solid #d97706; /* Oranye gelap */
-}
-.btn-edit:hover {
-    background: #d97706;       /* Hover lebih gelap */
-}
-
-/* Tombol Hapus (merah) */
-.btn-delete {
-    background: #ef4444;       /* Merah terang */
-    color: #ffffff;
-    border: 1px solid #dc2626; /* Merah gelap */
-}
-.btn-delete:hover {
-    background: #dc2626;       /* Hover lebih gelap */
-}
-
-.dropdown-label {
-    display: flex;
-    align-items: center;
-    justify-content: space-between; /* teks kiri, panah kanan */
-    width: 100%;                    /* label penuh lebar sidebar */
-    padding: 12px 16px;
-    color: #cbd5e1;
-    cursor: pointer;
-    border-radius: 8px;
-    transition: background 0.3s ease;
-}
-
-.arrow {
-    font-size: 14px;                /* ukuran panah */
-    transition: transform 0.3s ease;
-}
-
-#villa-toggle:checked ~ .dropdown-label .arrow {
-    transform: rotate(180deg);      /* animasi panah saat terbuka */
-}
-

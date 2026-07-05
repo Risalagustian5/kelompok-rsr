@@ -416,11 +416,28 @@ tbody td {
     background: #dc2626;       /* Hover lebih gelap */
 }
 
+/* Default dropdown tertutup */
+.dropdown-menu {
+    list-style: none;
+    padding-left: 20px;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.4s ease, opacity 0.4s ease;
+    opacity: 0;
+}
+
+/* Saat checkbox dicentang, buka dropdown */
+#villa-toggle:checked ~ .dropdown-menu {
+    max-height: 300px;
+    opacity: 1;
+}
+
+/* Label sebagai tombol */
 .dropdown-label {
     display: flex;
     align-items: center;
-    justify-content: space-between; /* teks kiri, panah kanan */
-    width: 100%;                    /* label penuh lebar sidebar */
+    justify-content: space-between; /* dorong panah ke kanan */
+    gap: 10px;
     padding: 12px 16px;
     color: #cbd5e1;
     cursor: pointer;
@@ -428,12 +445,18 @@ tbody td {
     transition: background 0.3s ease;
 }
 
+.dropdown-label:hover {
+    background-color: #4f46e5;
+    color: #ffffff;
+}
+
+/* Panah animasi */
 .arrow {
-    font-size: 14px;                /* ukuran panah */
+    font-size: 12px;          /* ukuran panah */
+    margin-left: auto;        /* pastikan selalu di kanan */
     transition: transform 0.3s ease;
 }
 
 #villa-toggle:checked ~ .dropdown-label .arrow {
-    transform: rotate(180deg);      /* animasi panah saat terbuka */
+    transform: rotate(180deg);
 }
-
