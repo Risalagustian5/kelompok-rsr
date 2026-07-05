@@ -5,43 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard - RSR App</title>
     <link rel="stylesheet" href="{{ asset('css/dashboard.css') }}">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2=family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
 
 <div class="dashboard-wrapper">
-    <aside class="sidebar">
-        <div class="sidebar-brand">
-            <h3>RSR APP</h3>
-        </div>
-        <ul class="sidebar-menu">
-            <li class="{{ request()->is('dashboard') ? 'active' : '' }}">
-                <a href="{{ route('dashboard') }}">📊 Dashboard</a>
-            </li>
-            <li class="{{ request()->is('villas*') ? 'active' : '' }}">
-                <a href="{{ route('villas.index') }}">🏡 Jelajah Villa</a>
-            </li>
-            <li class="{{ request()->is('history') ? 'active' : '' }}">
-                <a href="{{ route('history') }}">📋 Riwayat Pesanan</a>
-            </li>
-            <hr style="border: 0; border-top: 1px solid #334155; margin: 10px 0;">
-            <li class="{{ request()->is('profile') ? 'active' : '' }}">
-                <a href="{{ route('profile') }}">👤 Profil Saya</a>
-            </li>
-            <li class="{{ request()->is('tentang') ? 'active' : '' }}">
-                <a href="{{ route('tentang') }}">📁 Tentang Kelompok</a>
-            </li>
-            <li class="{{ request()->is('pengaturan') ? 'active' : '' }}">
-                <a href="{{ route('pengaturan') }}">⚙️ Pengaturan</a>
-            </li>
-        </ul>
-        <div class="sidebar-footer">
-            <form action="{{ route('logout') }}" method="POST">
-                @csrf
-                <button type="submit" class="btn-logout">🚪 Keluar</button>
-            </form>
-        </div>
-    </aside>
+    
+    @include('user.sidebar')
 
     <main class="main-content">
         <header class="content-header">
