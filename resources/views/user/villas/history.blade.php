@@ -18,15 +18,9 @@
 </head>
 <body>
 <div class="dashboard-wrapper">
-    <aside class="sidebar">
-        <div class="sidebar-brand"><h3>RSR APP</h3></div>
-        <ul class="sidebar-menu">
-            <li><a href="{{ route('dashboard') }}">📊 Dashboard</a></li>
-            <li><a href="{{ route('villas.index') }}">🏡 Jelajah Villa</a></li>
-            <li class="active"><a href="{{ route('history') }}">📋 Riwayat Pesanan</a></li>
-            <li><a href="{{ route('profile') }}">👤 Profil Saya</a></li>
-        </ul>
-    </aside>
+
+    @include('user.sidebar')
+
     <main class="main-content">
         <header class="content-header"><h2>Riwayat Pesanan Anda</h2></header>
         <section class="content-body">
@@ -65,7 +59,7 @@
                                 @if($b['status'] == 'pending') bg-warning
                                 @elseif($b['status'] == 'confirmed') bg-success
                                 @elseif($b['status'] == 'cancelled') bg-cancelled
-                                @endif
+                                @endif">
                                     {{ ucfirst($b['status']) }}
                                 </span>
                             </td>
