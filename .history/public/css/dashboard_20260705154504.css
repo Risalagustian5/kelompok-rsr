@@ -90,6 +90,7 @@ body {
     position: relative;
     z-index: 1;
     transition: transform 0.3s ease;
+
 }
 
 .sidebar-menu li a:hover .menu-icon {
@@ -103,7 +104,7 @@ body {
 }
 
 .sidebar-menu li a .menu-icon {
-    font-size: 22px;
+    font-size: 50px;
 }
 
 .btn-logout {
@@ -427,116 +428,6 @@ tbody td {
 
 .btn-hapus:hover {
     background: #dc2626;
-}
-
-/* ===== SETTINGS CARD (Pengaturan) ===== */
-.settings-card {
-    background-color: #ffffff;
-    padding: 30px;
-    border-radius: 12px;
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
-    animation: fadeInUp 0.7s ease;
-    max-width: 500px;
-}
-
-.settings-card h4 {
-    font-size: 16px;
-    font-weight: 600;
-    color: #111827;
-    margin-bottom: 20px;
-}
-
-.form-group {
-    margin-bottom: 18px;
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-}
-
-.form-group label {
-    font-size: 13px;
-    font-weight: 500;
-    color: #6b7280;
-}
-
-.form-group input {
-    padding: 10px 14px;
-    border: 1px solid #e5e7eb;
-    border-radius: 8px;
-    font-size: 14px;
-    font-family: 'Poppins', sans-serif;
-    transition: border-color 0.25s ease, box-shadow 0.25s ease;
-    outline: none;
-}
-
-.form-group input:focus {
-    border-color: #4f46e5;
-    box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.15);
-}
-
-.btn-save {
-    background: #4f46e5;
-    color: #ffffff;
-    border: none;
-    padding: 10px 22px;
-    border-radius: 8px;
-    font-weight: 600;
-    font-size: 14px;
-    font-family: 'Poppins', sans-serif;
-    cursor: pointer;
-    position: relative;
-    overflow: hidden;
-    transition: all 0.25s ease;
-}
-
-.btn-save::after {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: -100%;
-    width: 100%;
-    height: 100%;
-    background: rgba(255,255,255,0.25);
-    transition: left 0.3s ease;
-}
-
-.btn-save:hover::after {
-    left: 0;
-}
-
-.btn-save:hover {
-    background: #4338ca;
-    transform: translateY(-2px);
-}
-
-.btn-save:active {
-    transform: scale(0.96);
-}
-
-/* ===== ALERTS ===== */
-.alert-success,
-.alert-error {
-    padding: 12px 18px;
-    border-radius: 8px;
-    font-size: 13px;
-    margin-bottom: 20px;
-    animation: fadeInUp 0.4s ease;
-}
-
-.alert-success {
-    background: #d1fae5;
-    color: #065f46;
-    border: 1px solid #10b981;
-}
-
-.alert-error {
-    background: #fee2e2;
-    color: #991b1b;
-    border: 1px solid #ef4444;
-}
-
-.alert-error p {
-    margin: 0;
 }
 
 /* ===== FOOTER ===== */
