@@ -2,134 +2,143 @@
 
 namespace App\Http\Controllers\Api;
 
+
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Http;
-use Illuminate\Support\Facades\Str;
-use Illuminate\Support\Facades\Auth; // Tambahan Facade Auth
+use Illuminate\Support\Facades\Http; // <--- INI WAJIB DITAMBAHKAN
 use App\Models\Villa;
 
 class VillaController extends Controller
 {
-    // Mengatasi info: Menambahkan type string pada properti
-    protected string $supabaseUrl;
-    protected string $supabaseKey;
+    // --- RUTE USER (Booking & History) ---
 
-    public function __construct() {
-        $this->supabaseUrl = rtrim(env('SUPABASE_URL'), '/');
-        $this->supabaseKey = env('SUPABASE_KEY');
-    }
-
-    private function client() {
-        return Http::withHeaders([
-            'apikey'        => $this->supabaseKey,
-            'Authorization' => 'Bearer ' . $this->supabaseKey,
-            'Content-Type'  => 'application/json',
-            'Prefer'        => 'return=representation'
-        ]);
-    }
-
-    // --- RUTE USER (History & Cancel) ---
     public function historyBooking() {
-        // PERBAIKAN BARIS 31: Menggunakan Auth::id() agar Intelephense tidak error
-        $response = $this->client()->get($this->supabaseUrl . '/rest/v1/bookings?user_id=eq.' . Auth::id() . '&select=*,villa:villas(*)');
-        $bookings = $response->successful() ? $response->json() : [];
+        // Mengambil booking milik user yang sedang login beserta data villanya
+        $bookings = Booking::where('user_id', Auth::id())->with('villa')->get();
         return view('user.villas.history', compact('bookings'));
     }
 
-    // Mengatasi info: Menambahkan tipe data string/int pada $id
-    public function userCancelBooking(string $id) {
-        $this->client()->patch($this->supabaseUrl . '/rest/v1/bookings?id=eq.' . $id, ['status' => 'cancelled']);
+    public function userCancelBooking($id) {
+        $booking = Booking::where('id', $id)->where('user_id', Auth::id())->firstOrFail();
+        $booking->update(['status' => 'cancelled']);
         return back()->with('success', 'Pesanan dibatalkan');
     }
 
-    // --- RUTE ADMIN (Bookings) ---
-    public function adminBookings() {
-        $response = $this->client()->get($this->supabaseUrl . '/rest/v1/bookings?select=*,user:users(*),villa:villas(*)');
-        $bookings = $response->successful() ? $response->json() : [];
-        return view('admin.bookings.index', compact('bookings'));
-    }
+    // --- RUTE VILLA (User View) ---
 
-    public function confirmBooking(string $id) {
-        $this->client()->patch($this->supabaseUrl . '/rest/v1/bookings?id=eq.' . $id, ['status' => 'confirmed']);
-        return back()->with('success', 'Pesanan dikonfirmasi');
-    }
-
-    public function cancelBooking(string $id) {
-        $this->client()->patch($this->supabaseUrl . '/rest/v1/bookings?id=eq.' . $id, ['status' => 'cancelled']);
-        return back()->with('success', 'Pesanan dibatalkan');
-    }
-
-    public function destroyBooking(string $id) {
-        $this->client()->delete($this->supabaseUrl . '/rest/v1/bookings?id=eq.' . $id);
-        return back()->with('success', 'Pesanan dihapus');
-    }
-
-    // --- RUTE VILLA (CRUD) ---
     public function index() {
         $villas = Villa::all();
         return view('user.villas.index', compact('villas')); 
     }
 
-    public function show(string $id) {
-        $villa = Villa::find($id);
+    public function show($id) {
+        $villa = Villa::findOrFail($id);
         return view('user.villas.show', compact('villa')); 
     }
 
-   public function storeBooking(Request $request, string $id) {
-        // 1. Validasi input dari form detail villa
-        $request->validate([
-            'check_in'  => 'required|date',
-            'check_out' => 'required|date',
-            'guests'    => 'required|integer|min:1',
-        ]);
+   
+    // --- RUTE ADMIN (Villa Management) ---
 
-        // 2. Kirim data ke tabel 'bookings' di Supabase
-        $response = $this->client()->post($this->supabaseUrl . '/rest/v1/bookings', [
-            'user_id'    => Auth::id(),        // ID User yang sedang login
-            'villa_id'   => $id,               // ID Villa dari parameter URL
-            'check_in'   => $request->check_in,
-            'check_out'  => $request->check_out,
-            'guests'     => $request->guests,
-            'status'     => 'pending'          // Status awal pesanan masuk ke admin
-        ]);
-
-        if ($response->successful()) {
-            // Kembali ke halaman yang sama dengan membawa session success
-            return back()->with('success', 'Booking villa berhasil dilakukan! Menunggu konfirmasi admin.');
-        }
-
-        return back()->withErrors(['error' => 'Gagal melakukan booking ke Supabase.']);
-    }
-    
-    public function adminIndex() {
-        $response = $this->client()->get($this->supabaseUrl . '/rest/v1/villas?select=*');
-        $villas = $response->successful() ? $response->json() : [];
-        return view('admin.villas.index', compact('villas'));
+   public function adminIndex() {
+    $villas = Villa::all(); // Pastikan ini mengambil data dari Model
+    return view('admin.Villas.index', compact('villas'));
     }
 
-    public function create() { return view('admin.villas.create'); }
+    public function adminBookings() {
+        $bookings = Booking::with(['user', 'villa'])->get();
+        return view('admin.bookings.index', compact('bookings'));
+    }
 
-    public function store(Request $request) { /* Logika tambah villa */ }
+    public function confirmBooking($id) {
+        Booking::findOrFail($id)->update(['status' => 'confirmed']);
+        return back()->with('success', 'Pesanan dikonfirmasi');
+    }
 
-    public function edit(string $id) {
-        $response = $this->client()->get($this->supabaseUrl . '/rest/v1/villas?id=eq.' . $id);
-        $data = $response->json();
-        $villa = !empty($data) ? $data[0] : null;
+    public function cancelBooking($id) {
+        Booking::findOrFail($id)->update(['status' => 'cancelled']);
+        return back()->with('success', 'Pesanan dibatalkan');
+    }
+
+    public function destroyBooking($id) {
+        Booking::findOrFail($id)->delete();
+        return back()->with('success', 'Pesanan dihapus');
+    }
+
+   public function create() { 
+    return view('admin.villas.create'); 
+    }
+
+   // Di dalam VillaController.php
+
+public function store(Request $request) {
+    $request->validate([
+        'nama_villa' => 'required',
+        'harga'      => 'required',
+        'foto'       => 'required|image|mimes:jpeg,png,jpg,webp|max:2048',
+    ]);
+
+    // Simpan file ke folder storage/app/public/villas
+    $path = $request->file('foto')->store('villas', 'public');
+
+    // Gunakan 'foto_url' sesuai dengan isi $fillable di Villa.php
+    \App\Models\Villa::create([
+        'nama_villa' => $request->nama_villa,
+        'harga'      => str_replace('.', '', $request->harga),
+        'lokasi'     => $request->lokasi,
+        'deskripsi'  => $request->deskripsi,
+        'foto_url'   => $path, // <--- UBAH DARI 'foto' MENJADI 'foto_url'
+    ]);
+
+    return redirect()->route('admin.villas.index')->with('success', 'Villa berhasil ditambah!');
+}
+
+    public function edit($id) {
+        $villa = Villa::findOrFail($id);
         return view('admin.villas.edit', compact('villa'));
     }
 
-    public function update(Request $request, string $id) { /* Logika update */ }
+   public function update(Request $request, $id)
+{
+    // 1. Validasi input
+    $request->validate([
+        'nama_villa' => 'required',
+        'harga'      => 'required',
+        'foto'       => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048', // foto bersifat nullable (boleh kosong saat update)
+    ]);
 
-    public function destroy(string $id) {
-        $this->client()->delete($this->supabaseUrl . '/rest/v1/villas?id=eq.' . $id);
-        return redirect()->route('admin.villas.index');
+    $villa = \App\Models\Villa::findOrFail($id);
+
+    // 2. Cek apakah ada file foto baru yang diupload
+    if ($request->hasFile('foto')) {
+        // Hapus file lama jika perlu (opsional)
+        // \Storage::disk('public')->delete($villa->foto_url);
+
+        // Upload file baru
+        $path = $request->file('foto')->store('villas', 'public');
+        $data['foto_url'] = $path;
+    } else {
+        // Jika tidak ada file baru, tetap gunakan foto yang lama
+        $data['foto_url'] = $villa->foto_url;
     }
 
-    public function book(string $id) {
-    // Ganti find() menjadi findOrFail() agar memicu halaman error jika ID tidak ada
-    $villa = Villa::findOrFail($id); 
+    // 3. Update data lainnya
+    $data['nama_villa'] = $request->nama_villa;
+    $data['harga']      = str_replace('.', '', $request->harga);
+    $data['lokasi']     = $request->lokasi;
+    $data['deskripsi']  = $request->deskripsi;
 
-    return view('user.villas.book', ['villa' => $villa]);
+    $villa->update($data);
+
+    return redirect()->route('admin.villas.index')->with('success', 'Data villa berhasil diupdate!');
+    }
+
+    public function destroy($id) {
+        Villa::findOrFail($id)->delete();
+        return redirect()->route('admin.villas.index')->with('success', 'Villa dihapus');
+    }
+
+    public function book($id) {
+        $villa = Villa::findOrFail($id);
+        return view('user.villas.book', ['villa' => $villa]);
+    }
 }
-    }

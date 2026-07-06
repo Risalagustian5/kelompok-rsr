@@ -64,35 +64,38 @@
                 <th style="text-align: center;">Aksi</th>
               </tr>
             </thead>
-            <tbody>
-              @forelse($villas as $index => $v)
-              <tr>
-                <td>{{ $index + 1 }}</td>
-                <td>
-                   @if(!empty($v['foto']))
-                    <img src="{{ $v['foto'] }}" style="width: 100px; height: 65px; object-fit: cover; border-radius: 6px;" 
-                     onerror="this.src='https://ui-avatars.com/api/?name=Villa&background=random';">
-                   @else
-                      <span style="font-size: 12px; color: #999;">No Image</span>
-                    @endif
-                </td>        
-                <td style="font-weight: 600;">{{ $v['nama_villa'] }}</td>
-                <td>📍 {{ $v['lokasi'] }}</td>
-                <td style="font-weight: 700; color: #059669;">Rp {{ number_format($v['harga'] ?? 0, 0, ',', '.') }}</td>
-                <td>
-                  <div class="aksi-col" style="justify-content: center; display: flex; gap: 5px;">
-                    <a href="{{ route('admin.villas.edit', $v['id']) }}" class="btn btn-edit" style="background-color: #f59e0b; color: white; text-decoration: none; padding: 5px 10px; border-radius: 4px;">Edit</a>
-                    <form action="{{ route('admin.villas.destroy', $v['id']) }}" method="POST" onsubmit="return confirm('Yakin mau hapus?')">
-                      @csrf @method('DELETE')
-                      <button type="submit" class="btn btn-hapus" style="background-color: #ef4444; color: white; padding: 5px 10px; border: none; border-radius: 4px; cursor: pointer;">Hapus</button>
-                    </form>
-                  </div>
-                </td>
-              </tr>
-              @empty
-              <tr><td colspan="6" style="text-align: center; padding: 30px;">Belum ada villa.</td></tr>
-              @endforelse
-            </tbody>
+           <tbody>
+              @forelse($villas as $index => $villa)
+           <tr>
+            <td>{{ $index + 1 }}</td>
+            <td>
+    @if($villa->foto_url)
+        <img src="{{ asset('storage/' . $villa->foto_url) }}" width="100" alt="Foto">
+    @else
+        <span>No Image</span>
+    @endif
+</td>
+            <td>{{ $villa->nama_villa }}</td>
+            <td>📍 {{ $villa->lokasi }}</td>
+            <td style="font-weight: 700; color: #059669;">
+                 Rp {{ number_format($villa->harga ?? 0, 0, ',', '.') }}
+            </td>
+            <td>
+              <div class="aksi-col" style="justify-content: center; display: flex; gap: 5px;">
+                <a href="{{ route('admin.villas.edit', $villa->id) }}" class="btn btn-edit" style="background-color: #f59e0b; color: white; text-decoration: none; padding: 5px 10px; border-radius: 4px;">Edit</a>
+                <form action="{{ route('admin.villas.destroy', $villa->id) }}" method="POST" onsubmit="return confirm('Yakin mau hapus?')">
+                  @csrf @method('DELETE')
+                  <button type="submit" class="btn btn-hapus" style="background-color: #ef4444; color: white; padding: 5px 10px; border: none; border-radius: 4px; cursor: pointer;">Hapus</button>
+                </form>
+              </div>
+            </td>
+          </tr>
+          @empty
+          <tr>
+            <td colspan="6" style="text-align: center; padding: 30px;">Belum ada villa.</td>
+          </tr>
+          @endforelse
+        </tbody>
           </table>
         </div>
         <div class="footer" style="text-align: center; margin-top: 20px; color: #666;">© 2026 Kelompok Orang Orang Gantenk!!</div>
