@@ -14,7 +14,16 @@
         .bg-cancelled { background: #fee2e2; color: #991b1b; }
         .btn-cancel { background:#f59e0b; color:white; border:none; padding:6px 12px; border-radius:6px; cursor:pointer; font-size:12px; }
         .villa-thumb { width:80px; height:60px; object-fit:cover; border-radius:8px; }
+
+        /* Tambahkan ini biar gambarnya rapi dan konsisten */
+    .gambar-pesanan {
+        width: 150px;       /* Sesuaikan ukuran lebar yang kamu mau */
+        height: 100px;      /* Sesuaikan ukuran tinggi yang kamu mau */
+        object-fit: cover;  /* Biar gambarnya nggak gepeng */
+        border-radius: 8px; /* Biar sudutnya sedikit melengkung */
+    }
     </style>
+    
 </head>
 <body>
 <div class="dashboard-wrapper">
@@ -46,9 +55,9 @@
                         @forelse($bookings as $b)
                         <tr>
                             <td>
-                                <img src="{{ $b->villa->foto ?? 'https://ui-avatars.com/api/?name=Villa&background=random' }}" 
-                                     alt="{{ $b->villa->nama_villa ?? 'Villa' }}" class="villa-thumb">
-                            </td>
+                                <img src="{{ asset('storage/' . $b->villa->foto_url) }}" 
+                                 alt="{{ $b->villa->nama_villa }}" 
+                                 class="gambar-pesanan">
                             <td>{{ $b->villa->nama_villa ?? '-' }}</td>
                             <td>{{ $b->villa->lokasi ?? '-' }}</td>
                             <td>Rp {{ number_format($b->villa->harga ?? 0, 0, ',', '.') }}</td>

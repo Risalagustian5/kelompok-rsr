@@ -52,7 +52,7 @@
 
             <div class="detail-container">
                 <div>
-                    <img src="{{ $villa->foto ?? 'https://ui-avatars.com/api/?name=Villa&background=random' }}" class="villa-image-large">
+                    <img src="{{ asset('storage/' . $villa->foto_url) }}" alt="{{ $villa->nama_villa }}" class="...">
                     <div class="info-card" style="margin-top: 25px;">
                         <h1>{{ $villa->nama_villa }}</h1>
                         <p>📍 {{ $villa->lokasi }}</p>
@@ -66,26 +66,26 @@
                     <div class="info-card">
                         <div class="price-tag">Rp {{ number_format($villa->harga ?? 0, 0, ',', '.') }} <small>/ malam</small></div>
                         
-                        <form action="{{ route('villas.storeBooking', $villa->id) }}" method="POST">
-                            @csrf
+                        <form action="{{ route('villas.book', $villa->id) }}" method="POST">
+    @csrf 
 
-                            <div class="form-group">
-                                <label for="check_in">Check-in</label>
-                                <input type="date" id="check_in" name="check_in" required>
-                            </div>
-
-                            <div class="form-group">
-                                <label for="check_out">Check-out</label>
-                                <input type="date" id="check_out" name="check_out" required>
-                            </div>
-
-                            <div class="form-group">
-                                <label for="guests">Jumlah Tamu</label>
-                                <input type="number" id="guests" name="guests" min="1" value="1" required>
-                            </div>
-
-                            <button type="submit" class="btn-booking">✨ Pesan Sekarang</button>
-                        </form>
+    <div class="form-group">
+        <label>Tanggal Check-in</label>
+        <input type="date" name="check_in" required>
+    </div>
+    
+    <div class="form-group">
+        <label>Tanggal Check-out</label>
+        <input type="date" name="check_out" required>
+    </div>
+    
+    <div class="form-group">
+        <label>Jumlah Tamu</label>
+        <input type="number" name="jumlah_tamu" min="1" required>
+    </div>
+    
+    <button type="submit" class="btn-booking">Pesan Sekarang</button>
+</form>
                     </div>
                 </div>
             </div>

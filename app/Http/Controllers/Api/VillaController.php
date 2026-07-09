@@ -2,26 +2,45 @@
 
 namespace App\Http\Controllers\Api;
 
-
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Http; // <--- INI WAJIB DITAMBAHKAN
+use Illuminate\Support\Facades\Http; 
+use Illuminate\Support\Facades\Auth; // <--- TAMBAHKAN INI (Untuk cek user login)
 use App\Models\Villa;
+use App\Models\Booking;              // <--- TAMBAHKAN INI (Biar error not found hilang)
 
 class VillaController extends Controller
 {
+    // ... (kode lainnya biarkan saja)
     // --- RUTE USER (Booking & History) ---
 
-    public function historyBooking() {
-        // Mengambil booking milik user yang sedang login beserta data villanya
-        $bookings = Booking::where('user_id', Auth::id())->with('villa')->get();
-        return view('user.villas.history', compact('bookings'));
-    }
+    // 1. Melihat Riwayat Pesanan
+  public function historyBooking() {
+    // Tambahkan ->with('villa') di sini
+    $bookings = Booking::where('user_id', Auth::id())
+                       ->with('villa') 
+                       ->orderBy('created_at', 'desc')
+                       ->get();
+    return view('user.villas.history', compact('bookings'));
+}
 
+// 3. Membatalkan pesanan (khusus User)
     public function userCancelBooking($id) {
-        $booking = Booking::where('id', $id)->where('user_id', Auth::id())->firstOrFail();
+        $booking = Booking::findOrFail($id);
+
+        // Keamanan: Cuma yang punya pesanan yang bisa batalin
+        if ($booking->user_id !== Auth::id()) {
+            return back()->with('error', 'Anda tidak berhak membatalkan pesanan ini.');
+        }
+
+        // Kalau udah dikonfirmasi admin, nggak bisa dibatalin
+        if ($booking->status === 'confirmed') {
+            return back()->with('error', 'Pesanan sudah dikonfirmasi, tidak dapat dibatalkan.');
+        }
+
         $booking->update(['status' => 'cancelled']);
-        return back()->with('success', 'Pesanan dibatalkan');
+
+        return back()->with('success', 'Pesanan berhasil dibatalkan.');
     }
 
     // --- RUTE VILLA (User View) ---
@@ -31,9 +50,13 @@ class VillaController extends Controller
         return view('user.villas.index', compact('villas')); 
     }
 
-    public function show($id) {
+  // 1. Menampilkan detail satu villa
+    public function show($id)
+    {
         $villa = Villa::findOrFail($id);
-        return view('user.villas.show', compact('villa')); 
+        
+        // Mengarah ke resources/views/user/villas/show.blade.php
+        return view('user.villas.show', compact('villa'));
     }
 
    
@@ -141,4 +164,27 @@ public function store(Request $request) {
         $villa = Villa::findOrFail($id);
         return view('user.villas.book', ['villa' => $villa]);
     }
+    // 2. Memproses Booking dari form user
+    public function storeBooking(Request $request, $id) {
+        $request->validate([
+            'check_in'    => 'required|date|after_or_equal:today',
+            'check_out'   => 'required|date|after:check_in',
+            'jumlah_tamu' => 'required|integer|min:1', 
+        ]);
+
+        $villa = Villa::findOrFail($id);
+
+        Booking::create([
+            'user_id'     => Auth::id(), 
+            'villa_id'    => $villa->id,
+            'check_in'    => $request->check_in,
+            'check_out'   => $request->check_out,
+            'jumlah_tamu' => $request->jumlah_tamu,
+            'status'      => 'pending', 
+        ]);
+
+        return redirect()->route('history')->with('success', 'Berhasil memesan villa! Menunggu konfirmasi admin.');
+    }
+
+    
 }
