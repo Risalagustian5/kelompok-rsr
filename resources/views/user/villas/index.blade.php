@@ -55,7 +55,7 @@
             <div class="cards-grid">
                 @forelse($villas as $v)
                 <div class="card">
-                    <img src="{{ $v->foto ?? 'https://ui-avatars.com/api/?name=Villa&background=random' }}" alt="{{ $v->nama_villa }}">
+                   <img src="{{ asset('storage/' . $v->foto_url) }}" alt="{{ $v->nama_villa }}" class="...">
                     <div class="card-body">
                         <h4 style="margin-bottom: 5px;">{{ $v->nama_villa }}</h4>
                         <p style="color: #64748b; font-size: 13px; margin-bottom: 10px;">📍 {{ $v->lokasi }}</p>

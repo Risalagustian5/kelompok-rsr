@@ -33,7 +33,8 @@ Route::middleware(['auth', 'role:user'])->group(function () {
     Route::get('/villas/{id}',  [VillaController::class, 'show'])->name('villas.show');
 
     // Booking (Blade)
-    Route::post('/villas/{id}/book', [VillaController::class, 'storeBooking'])->name('villas.storeBooking');
+  // Pastikan baris ini ada:
+    Route::post('/villas/{id}/book', [VillaController::class, 'storeBooking'])->name('villas.book');
     Route::get('/history',                [VillaController::class, 'historyBooking'])->name('history');
     Route::patch('/bookings/{id}/cancel', [VillaController::class, 'userCancelBooking'])->name('bookings.user.cancel');
 });
