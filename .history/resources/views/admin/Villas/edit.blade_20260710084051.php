@@ -26,12 +26,12 @@
 
                         <div class="row">
                             <div class="col-md-6 mb-3">
-                                <label class="form-label">Harga (Rp)</label>
-                                <input type="text" inputmode="numeric" name="harga" id="harga" 
-                                     class="form-control" 
-                                     value="{{ number_format($villa->harga, 0, ',', '.') }}" 
-                                     required>
-                            </div>
+                                  <label class="form-label">Harga (Rp)</label>
+    <input type="text" inputmode="numeric" name="harga" id="harga" 
+           class="form-control" 
+           value="{{ number_format($villa->harga, 0, ',', '.') }}" 
+           required>
+</div>
                             <div class="col-md-6 mb-3">
                                 <label class="form-label">Lokasi</label>
                                 <input type="text" name="lokasi" class="form-control" value="{{ $villa->lokasi }}" required>
