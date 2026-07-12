@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Detail Villa - {{ $villa->nama_villa }}</title>
     <link rel="stylesheet" href="{{ asset('css/dashboard.css') }}">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
 
     <style>
         body {
@@ -22,7 +22,6 @@
             margin-top: 20px; 
         }
 
-        /* Foto utama villa */
         .villa-image-large { 
             width: 100%; 
             height: 400px; 
@@ -40,17 +39,26 @@
 
         /* Judul villa */
         .villa-title {
-            font-size: 30px;
+            font-size: 32px;
             font-weight: 700;
             color: #1f2937;
             margin-bottom: 8px;
+            text-align: left;
+            letter-spacing: 0.5px;
         }
 
         /* Lokasi villa */
         .villa-location {
             font-size: 15px;
             color: #64748b;
-            margin-bottom: 15px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            font-weight: 500;
+        }
+        .villa-location::before {
+            content: "📍";
+            margin-right: 6px;
         }
 
         /* Heading deskripsi */
@@ -59,6 +67,8 @@
             font-weight: 600;
             color: #2563eb;
             margin-bottom: 8px;
+            border-left: 4px solid #2563eb;
+            padding-left: 8px;
         }
 
         /* Isi deskripsi */
@@ -70,9 +80,8 @@
             margin-top: 5px;
         }
 
-        /* Bagian harga + form booking (sederhana) */
         .price-tag { 
-            font-size: 24px; 
+            font-size: 26px; 
             font-weight: 700; 
             color: #2563eb; 
             margin-bottom: 15px; 
@@ -80,7 +89,7 @@
 
         .btn-booking { 
             width: 100%; 
-            background: #059669; 
+            background: linear-gradient(90deg, #059669, #10b981); 
             color: white; 
             border: none; 
             padding: 12px; 
@@ -88,46 +97,9 @@
             font-weight: 600; 
             cursor: pointer; 
             margin-top: 10px; 
+            transition: background 0.3s ease;
         }
-        .btn-booking:hover { background: #047857; }
-
-        .form-group { margin-bottom: 15px; }
-        .form-group label { 
-            display: block; 
-            font-size: 13px; 
-            color: #64748b; 
-            margin-bottom: 5px; 
-        }
-        .form-group input { 
-            width: 100%; 
-            padding: 8px; 
-            border: 1px solid #cbd5e1; 
-            border-radius: 6px; 
-            box-sizing: border-box; 
-        }
-
-        /* Back-link jadi tombol */
-        .back-link {
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            text-decoration: none;
-            font-size: 14px;
-            font-weight: 600;
-            color: #2563eb;
-            background: #e0f2fe;
-            padding: 8px 14px;
-            border-radius: 6px;
-            transition: all 0.3s ease;
-        }
-        .back-link:hover {
-            background: #2563eb;
-            color: white;
-            transform: translateX(-3px);
-        }
-        .back-icon {
-            font-size: 16px;
-        }
+        .btn-booking:hover { background: linear-gradient(90deg, #047857, #059669); }
 
         @media (max-width: 768px) {
             .detail-container {
@@ -135,6 +107,12 @@
             }
             .villa-image-large {
                 height: 250px;
+            }
+            .villa-title {
+                text-align: center;
+            }
+            .villa-location {
+                justify-content: center;
             }
         }
     </style>
@@ -147,10 +125,7 @@
 
     <main class="main-content">
         <header class="content-header">
-            <a href="{{ route('villas.index') }}" class="back-link">
-                <span class="back-icon">←</span>
-                <span>Kembali ke Jelajah</span>
-            </a>
+            <a href="{{ route('villas.index') }}" class="back-link">← Kembali ke Jelajah</a>
             <h2>Detail Villa</h2>
         </header>
 
@@ -164,7 +139,7 @@
 
                     <div class="info-card" style="margin-top: 25px;">
                         <h1 class="villa-title">{{ $villa->nama_villa }}</h1>
-                        <p class="villa-location">📍 {{ $villa->lokasi }}</p>
+                        <p class="villa-location">{{ $villa->lokasi }}</p>
                         <hr>
                         <h4 class="villa-section-title">Deskripsi</h4>
                         <p class="villa-description">

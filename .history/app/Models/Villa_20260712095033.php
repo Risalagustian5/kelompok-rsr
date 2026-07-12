@@ -24,9 +24,5 @@ class Villa extends Model
         return $this->hasMany(Booking::class);
     }
 
-    public function photos()
-    {
-        return $this->hasMany(Photo::class);
-    }
-
+    
 }
