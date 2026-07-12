@@ -60,8 +60,7 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
     Route::put('/villas/{id}',      [VillaController::class, 'update'])->name('villas.update');
     Route::delete('/villas/{id}',   [VillaController::class, 'destroy'])->name('villas.destroy');
 
-     // Upload Foto Villa
-    Route::post('/photos', [PhotoController::class, 'store'])->name('photos.store');
+    
 
     // Manajemen Pesanan (Booking) - pakai BookingController
     Route::get('/bookings',               [BookingController::class, 'adminBookings'])->name('bookings.index');

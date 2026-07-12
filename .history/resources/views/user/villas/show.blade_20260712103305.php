@@ -70,7 +70,7 @@
             margin-top: 5px;
         }
 
-        /* Bagian harga + form booking (sederhana) */
+        /* Bagian harga + form booking (versi awal/sederhana) */
         .price-tag { 
             font-size: 24px; 
             font-weight: 700; 
@@ -106,29 +106,6 @@
             box-sizing: border-box; 
         }
 
-        /* Back-link jadi tombol */
-        .back-link {
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            text-decoration: none;
-            font-size: 14px;
-            font-weight: 600;
-            color: #2563eb;
-            background: #e0f2fe;
-            padding: 8px 14px;
-            border-radius: 6px;
-            transition: all 0.3s ease;
-        }
-        .back-link:hover {
-            background: #2563eb;
-            color: white;
-            transform: translateX(-3px);
-        }
-        .back-icon {
-            font-size: 16px;
-        }
-
         @media (max-width: 768px) {
             .detail-container {
                 grid-template-columns: 1fr;
@@ -147,10 +124,7 @@
 
     <main class="main-content">
         <header class="content-header">
-            <a href="{{ route('villas.index') }}" class="back-link">
-                <span class="back-icon">←</span>
-                <span>Kembali ke Jelajah</span>
-            </a>
+            <a href="{{ route('villas.index') }}" class="back-link">← Kembali ke Jelajah</a>
             <h2>Detail Villa</h2>
         </header>
 
