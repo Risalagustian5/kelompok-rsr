@@ -482,272 +482,6 @@ body {
     color: #9ca3af;
 }
 
-/* ===== PAGE TRANSITION ANIMATION ===== */
-@keyframes pageFadeIn {
-    from {
-        opacity: 0;
-        transform: translateY(14px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-@keyframes pageFadeOut {
-    from {
-        opacity: 1;
-        transform: translateY(0);
-    }
-    to {
-        opacity: 0;
-        transform: translateY(-10px);
-    }
-}
-
-.dashboard-wrapper {
-    animation: pageFadeIn 0.45s cubic-bezier(0.16, 1, 0.3, 1) both;
-}
-
-.dashboard-wrapper.page-leaving {
-    animation: pageFadeOut 0.28s ease-in both;
-}
-
-/* Sidebar & konten masuk sedikit bertahap biar lebih halus */
-.sidebar {
-    animation: pageFadeIn 0.5s cubic-bezier(0.16, 1, 0.3, 1) both;
-}
-
-.main-content {
-    animation: pageFadeIn 0.55s cubic-bezier(0.16, 1, 0.3, 1) both;
-    animation-delay: 0.05s;
-}
-
-/* Elemen di dalam konten juga fade-in ringan berurutan */
-.content-header {
-    animation: pageFadeIn 0.5s cubic-bezier(0.16, 1, 0.3, 1) both;
-    animation-delay: 0.1s;
-}
-
-.cards-grid .card,
-.welcome-box,
-.table-card {
-    animation: pageFadeIn 0.55s cubic-bezier(0.16, 1, 0.3, 1) both;
-    animation-delay: 0.15s;
-}
-
-.cards-grid .card:nth-child(2) { animation-delay: 0.2s; }
-.cards-grid .card:nth-child(3) { animation-delay: 0.25s; }
-.cards-grid .card:nth-child(4) { animation-delay: 0.3s; }
-
-/* Hormati preferensi user yang minta animasi dikurangi */
-@media (prefers-reduced-motion: reduce) {
-    .dashboard-wrapper,
-    .dashboard-wrapper.page-leaving,
-    .sidebar,
-    .main-content,
-    .content-header,
-    .cards-grid .card,
-    .welcome-box,
-    .table-card {
-        animation: none !important;
-    }
-}
-
-/* ===== PAGE TRANSITION ANIMATION ===== */
-@keyframes pageFadeIn {
-    from {
-        opacity: 0;
-        transform: translateY(14px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-@keyframes pageFadeOut {
-    from {
-        opacity: 1;
-        transform: translateY(0);
-    }
-    to {
-        opacity: 0;
-        transform: translateY(-10px);
-    }
-}
-
-.dashboard-wrapper {
-    animation: pageFadeIn 0.45s cubic-bezier(0.16, 1, 0.3, 1) both;
-}
-
-.dashboard-wrapper.page-leaving {
-    animation: pageFadeOut 0.28s ease-in both;
-}
-
-/* Sidebar & konten masuk sedikit bertahap biar lebih halus */
-.sidebar {
-    animation: pageFadeIn 0.5s cubic-bezier(0.16, 1, 0.3, 1) both;
-}
-
-.main-content {
-    animation: pageFadeIn 0.55s cubic-bezier(0.16, 1, 0.3, 1) both;
-    animation-delay: 0.05s;
-}
-
-/* Elemen di dalam konten juga fade-in ringan berurutan */
-.content-header {
-    animation: pageFadeIn 0.5s cubic-bezier(0.16, 1, 0.3, 1) both;
-    animation-delay: 0.1s;
-}
-
-.cards-grid .card,
-.welcome-box,
-.table-card {
-    animation: pageFadeIn 0.55s cubic-bezier(0.16, 1, 0.3, 1) both;
-    animation-delay: 0.15s;
-}
-
-.cards-grid .card:nth-child(2) { animation-delay: 0.2s; }
-.cards-grid .card:nth-child(3) { animation-delay: 0.25s; }
-.cards-grid .card:nth-child(4) { animation-delay: 0.3s; }
-
-/* Hormati preferensi user yang minta animasi dikurangi */
-@media (prefers-reduced-motion: reduce) {
-    .dashboard-wrapper,
-    .dashboard-wrapper.page-leaving,
-    .sidebar,
-    .main-content,
-    .content-header,
-    .cards-grid .card,
-    .welcome-box,
-    .table-card {
-        animation: none !important;
-    }
-}
-
-/* ===== PAGE TRANSITION ANIMATION ===== */
-@keyframes pageFadeIn {
-    from {
-        opacity: 0;
-        transform: translateY(8px) scale(0.995);
-        filter: blur(2px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0) scale(1);
-        filter: blur(0);
-    }
-}
-
-@keyframes pageFadeOut {
-    from {
-        opacity: 1;
-        transform: translateY(0) scale(1);
-        filter: blur(0);
-    }
-    to {
-        opacity: 0;
-        transform: translateY(-6px) scale(0.995);
-        filter: blur(2px);
-    }
-}
-
-.dashboard-wrapper {
-    animation: pageFadeIn 0.6s cubic-bezier(0.22, 1, 0.36, 1) both;
-}
-
-.dashboard-wrapper.page-leaving {
-    animation: pageFadeOut 0.35s cubic-bezier(0.4, 0, 1, 1) both;
-}
-
-/* Sidebar & konten masuk sedikit bertahap biar lebih halus */
-.sidebar {
-    animation: pageFadeIn 0.65s cubic-bezier(0.22, 1, 0.36, 1) both;
-}
-
-.main-content {
-    animation: pageFadeIn 0.65s cubic-bezier(0.22, 1, 0.36, 1) both;
-    animation-delay: 0.06s;
-}
-
-/* Elemen di dalam konten juga fade-in ringan berurutan */
-.content-header {
-    animation: pageFadeIn 0.6s cubic-bezier(0.22, 1, 0.36, 1) both;
-    animation-delay: 0.12s;
-}
-
-.cards-grid .card,
-.welcome-box,
-.table-card {
-    animation: pageFadeIn 0.65s cubic-bezier(0.22, 1, 0.36, 1) both;
-    animation-delay: 0.18s;
-}
-
-.cards-grid .card:nth-child(2) { animation-delay: 0.24s; }
-.cards-grid .card:nth-child(3) { animation-delay: 0.30s; }
-.cards-grid .card:nth-child(4) { animation-delay: 0.36s; }
-
-/* Hormati preferensi user yang minta animasi dikurangi */
-@media (prefers-reduced-motion: reduce) {
-    .dashboard-wrapper,
-    .dashboard-wrapper.page-leaving,
-    .sidebar,
-    .main-content,
-    .content-header,
-    .cards-grid .card,
-    .welcome-box,
-    .table-card {
-        animation: none !important;
-    }
-}
-
-/* ===== PAGE TRANSITION (CSS-only, tanpa JS, browser modern) ===== */
-@view-transition {
-    navigation: auto;
-}
-
-::view-transition-old(root) {
-    animation: pageFadeOutVT 0.35s cubic-bezier(0.4, 0, 1, 1) both;
-}
-
-::view-transition-new(root) {
-    animation: pageFadeInVT 0.6s cubic-bezier(0.22, 1, 0.36, 1) both;
-}
-
-@keyframes pageFadeInVT {
-    from {
-        opacity: 0;
-        transform: translateY(8px) scale(0.995);
-        filter: blur(2px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0) scale(1);
-        filter: blur(0);
-    }
-}
-
-@keyframes pageFadeOutVT {
-    from {
-        opacity: 1;
-        transform: translateY(0) scale(1);
-        filter: blur(0);
-    }
-    to {
-        opacity: 0;
-        transform: translateY(-6px) scale(0.995);
-        filter: blur(2px);
-    }
-}
-
-@media (prefers-reduced-motion: reduce) {
-    ::view-transition-old(root),
-    ::view-transition-new(root) {
-        animation: none !important;
-    }
-}
-
 /* ===== RESPONSIVE ===== */
 @media (max-width: 900px) {
     .sidebar {
@@ -935,5 +669,34 @@ body {
 
     .sidebar-menu li a .menu-icon {
         font-size: 20px;
+    }
+}
+/* ===== PAGE TRANSITION (CSS-only, tanpa JS) ===== */
+@view-transition {
+    navigation: auto;
+}
+
+::view-transition-old(root) {
+    animation: pageFadeOutVT 0.25s ease-in both;
+}
+
+::view-transition-new(root) {
+    animation: pageFadeInVT 0.4s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+@keyframes pageFadeInVT {
+    from { opacity: 0; transform: translateY(14px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes pageFadeOutVT {
+    from { opacity: 1; transform: translateY(0); }
+    to   { opacity: 0; transform: translateY(-10px); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    ::view-transition-old(root),
+    ::view-transition-new(root) {
+        animation: none !important;
     }
 }
