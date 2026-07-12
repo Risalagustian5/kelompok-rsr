@@ -9,7 +9,7 @@
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 
   {{-- Custom override agar tampilan tetap identik seperti versi asli --}}
-  <link rel="stylesheet" href="{{ asset('css/ADMIN-bootstrap.css') }}" />
+  <link rel="stylesheet" href="{{ asset('css/admin-bootstrap.css') }}" />
 </head>
 <body>
 
