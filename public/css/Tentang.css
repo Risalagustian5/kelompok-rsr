@@ -1,6 +1,7 @@
+/* --- CUSTOM UTILITIES & FONTS --- */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
 * {
-    margin: 0;
-    padding: 0;
     box-sizing: border-box;
     font-family: 'Poppins', sans-serif;
 }
@@ -8,6 +9,7 @@
 body {
     background-color: #f3f4f6;
     color: #1f2937;
+    overflow-x: hidden;
 }
 
 .dashboard-wrapper {
@@ -15,7 +17,7 @@ body {
     min-height: 100vh;
 }
 
-/* SIDEBAR */
+/* --- SIDEBAR CUSTOM --- */
 .sidebar {
     width: 260px;
     background-color: #1e1b4b;
@@ -43,6 +45,7 @@ body {
 .sidebar-menu {
     list-style: none;
     flex-grow: 1;
+    padding-left: 0;
 }
 
 .sidebar-menu li {
@@ -94,12 +97,14 @@ body {
     transform: rotate(15deg) scale(1.1);
 }
 
+/* WARNA MENU AKTIF INDIGO SOLID */
 .sidebar-menu li a:hover,
 .sidebar-menu li.active a {
-    background-color: #4f46e5;
-    color: #ffffff;
+    background-color: #4f46e5 !important;
+    color: #ffffff !important;
 }
 
+/* --- BUTTON LOGOUT CUSTOM --- */
 .btn-logout {
     width: 100%;
     padding: 12px;
@@ -133,14 +138,14 @@ body {
     background-color: #dc2626;
 }
 
-/* KONTEN UTAMA */
+/* --- MAIN CONTENT LAYOUT FIXED (Hapus padding 40px agar header full-width) --- */
 .main-content {
     margin-left: 260px;
     flex-grow: 1;
-    padding: 40px;
     min-height: 100vh;
     display: flex;
     flex-direction: column;
+    padding: 0; /* Diubah menjadi 0 agar header mentok ke ujung layar atas & kanan */
     animation: fadeInUp 0.6s ease;
 }
 
@@ -155,18 +160,15 @@ body {
     }
 }
 
+/* --- HEADER FIXED (Full Width & Background Putih Bersih) --- */
 .content-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 30px;
+    padding: 20px 40px; /* Jarak di dalam header agar teks tetap rapi */
+    background-color: #ffffff; /* Putih bersih full-width */
     border-bottom: 2px solid #e5e7eb;
-    padding-bottom: 20px;
-}
-
-.content-header h2 {
-    font-weight: 600;
-    color: #111827;
+    margin-bottom: 0;
 }
 
 .user-profile {
@@ -177,35 +179,40 @@ body {
     box-shadow: 0 2px 4px rgba(0,0,0,0.05);
 }
 
-/* WELCOME BOX */
+/* --- BODY CONTENT AREA (Jarak isi halaman di bawah header) --- */
+.content-body {
+    padding: 40px; /* Membungkus card & banner di bawah header dengan aman */
+    flex: 1;
+}
+
+/* ===== WELCOME BOX BANNER UNIFIED (Warna Ungu Solid Indigo) ===== */
 .welcome-box {
-    background: linear-gradient(135deg, #6366f1, #4f46e5);
-    color: white;
+    background: #4f46e5 !important;
+    background-image: none !important;
+    color: #ffffff !important;
     padding: 30px;
     border-radius: 12px;
     margin-bottom: 30px;
-    box-shadow: 0 10px 15px -3px rgba(79, 70, 229, 0.3);
+    box-shadow: 0 10px 15px -3px rgba(79, 70, 229, 0.2) !important;
     animation: fadeInUp 0.8s ease;
 }
 
 .welcome-box h3 {
-    margin-bottom: 10px;
+    margin-bottom: 12px;
     font-weight: 600;
+    font-size: 18px;
+    color: #ffffff !important;
 }
 
 .welcome-box p {
     font-weight: 300;
     line-height: 1.6;
-    opacity: 0.9;
+    opacity: 0.95;
+    font-size: 14px;
+    color: #ffffff !important;
 }
 
-/* GRID ANGGOTA */
-.cards-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 20px;
-}
-
+/* --- MEMBER CARD HOVER EFFECT --- */
 .member-card {
     background-color: #ffffff;
     padding: 28px 20px;
@@ -214,6 +221,7 @@ body {
     box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
     transition: transform 0.3s ease, box-shadow 0.3s ease;
     animation: fadeInUp 0.7s ease;
+    height: 100%;
 }
 
 .member-card:hover {
@@ -250,7 +258,7 @@ body {
     color: #9ca3af;
 }
 
-/* FOOTER */
+/* --- FOOTER --- */
 .footer {
     margin-top: auto;
     padding: 20px;
@@ -260,7 +268,7 @@ body {
     border-top: 1px solid #e5e7eb;
 }
 
-/* RESPONSIVE MOBILE */
+/* --- RESPONSIVE MOBILE (768px Bootstrap Breakpoint) --- */
 @media (max-width: 768px) {
     .sidebar {
         position: relative;
@@ -288,7 +296,7 @@ body {
 
     .sidebar-menu li a {
         padding: 8px 12px;
-        font-size: 22px;
+        font-size: 14px;
     }
 
     .dashboard-wrapper {
@@ -297,17 +305,18 @@ body {
 
     .main-content {
         margin-left: 0;
-        padding: 20px;
+        padding: 0;
     }
 
     .content-header {
+        padding: 16px 20px;
         flex-direction: column;
         align-items: flex-start;
         gap: 10px;
     }
 
-    .cards-grid {
-        grid-template-columns: 1fr;
+    .content-body {
+        padding: 20px;
     }
 
     .welcome-box {
