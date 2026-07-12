@@ -2,14 +2,8 @@
 <html lang="id">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Kelola Pesanan - SAVIOUR Admin</title>
-
-  {{-- Bootstrap 5 --}}
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-
-  {{-- Custom override agar tampilan tetap identik seperti versi asli --}}
-  <link rel="stylesheet" href="{{ asset('css/ADMIN-bootstrap.css') }}" />
+  <link rel="stylesheet" href="{{ asset('css/ADMIN.css') }}" />
 </head>
 <body>
 <div class="dashboard-wrapper">
@@ -60,27 +54,18 @@
                 <td>{{ $b['villa']['nama_villa'] ?? '-' }}</td>
                 <td>{{ $b['check_in'] ?? '-' }}</td>
                 <td>{{ $b['check_out'] ?? '-' }}</td>
-                <td>
-                  @php $status = $b['status'] ?? '-'; @endphp
-                  <span class="badge 
-                    @if($status === 'pending') badge-pending 
-                    @elseif($status === 'confirmed') badge-confirmed 
-                    @elseif($status === 'cancelled') badge-cancelled 
-                    @endif">
-                    {{ ucfirst($status) }}
-                  </span>
-                </td>
+                <td>{{ ucfirst($b['status'] ?? '-') }}</td>
                 <td class="aksi-buttons">
                   {{-- Tombol Konfirmasi hanya untuk status pending --}}
                   @if(($b['status'] ?? '') === 'pending')
                     <form action="{{ route('admin.bookings.confirm', $b['id']) }}" method="POST">
-                      @csrf @method('POST')
+                      @csrf
                       <button type="submit" class="btn btn-confirm">Konfirmasi</button>
                     </form>
                   @endif
 
-                  {{-- Tombol Cancel tampil untuk pending & confirmed --}}
-                  @if(in_array(($b['status'] ?? ''), ['pending','confirmed']))
+                  {{-- Tombol Cancel hanya untuk status confirmed --}}
+                  @if(($b['status'] ?? '') === 'confirmed')
                     <form action="{{ route('admin.bookings.cancel', $b['id']) }}" method="POST">
                       @csrf @method('PATCH')
                       <button type="submit" class="btn btn-cancel">Cancel</button>
@@ -104,7 +89,5 @@
     </div>
   </div>
 </div>
-
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

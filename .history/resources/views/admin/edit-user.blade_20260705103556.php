@@ -4,12 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Edit User - SAVIOUR Admin</title>
-
-  {{-- Bootstrap 5 --}}
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-
-  {{-- Custom override agar tampilan tetap identik seperti versi asli --}}
-  <link rel="stylesheet" href="{{ asset('css/ADMIN-bootstrap.css') }}" />
+  <link rel="stylesheet" href="{{ asset('css/ADMIN.css') }}" />
 </head>
 <body>
 
@@ -34,32 +29,30 @@
           @csrf
           @method('PUT')
 
-          <div class="edit-form-group">
-            <label for="name">Nama Lengkap</label>
-            <input type="text" id="name" name="name" value="{{ $user->name }}" class="form-control" required>
+          <div style="margin-bottom: 15px;">
+            <label>Nama Lengkap</label><br>
+            <input type="text" name="name" value="{{ $user->name }}" style="width: 100%; padding: 8px;" required>
           </div>
 
-          <div class="edit-form-group">
-            <label for="email">Email</label>
-            <input type="email" id="email" name="email" value="{{ $user->email }}" class="form-control" required>
+          <div style="margin-bottom: 15px;">
+            <label>Email</label><br>
+            <input type="email" name="email" value="{{ $user->email }}" style="width: 100%; padding: 8px;" required>
           </div>
 
-          <div class="edit-form-group">
-            <label for="role">Role</label>
-            <select id="role" name="role" class="form-select">
+          <div style="margin-bottom: 15px;">
+            <label>Role</label><br>
+            <select name="role" style="width: 100%; padding: 8px;">
               <option value="admin" {{ $user->role == 'admin' ? 'selected' : '' }}>Admin</option>
               <option value="user" {{ $user->role == 'user' ? 'selected' : '' }}>User</option>
             </select>
           </div>
 
-          <button type="submit" class="btn-simpan">Simpan Perubahan</button>
-          <a href="{{ route('admin.users') }}" class="link-batal">Batal</a>
+          <button type="submit" style="background: #2563eb; color: white; padding: 10px 20px; border: none; border-radius: 4px; cursor: pointer;">Simpan Perubahan</button>
+          <a href="{{ route('admin.users') }}" style="margin-left: 10px; color: #666;">Batal</a>
         </form>
       </div>
     </div>
   </div>
 </div>
-
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

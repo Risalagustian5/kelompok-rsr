@@ -1,0 +1,24 @@
+/* Efek tambahan unik */
+.card:hover {
+  transform: translateY(-5px);
+  transition: 0.3s ease;
+}
+
+/* Custom hover untuk tombol */
+.btn-primary:hover {
+  background-color: #1d4ed8 !important;
+}
+
+/* Sidebar branding khusus */
+.sidebar {
+  background-color: #1e1b4b; /* override warna default Bootstrap */
+}
+
+.sidebar a {
+  color: #cbd5e1;
+  text-decoration: none;
+}
+
+.sidebar a:hover {
+  color: #fff;
+}
